@@ -10,7 +10,7 @@ from clustering_util import *
 np.random.seed(42)
 
 ### Visualize Data
-x = getData()
+x, _ = getData()
 x, _ = addPCA(x)
 
 # plot the ipos
@@ -22,7 +22,7 @@ plt.show()
 
 
 ### Remove Outliers
-x = getData()
+x, _ = getData()
 x, _ = addPCA(x)
 x = removeOutliers(x)
 
@@ -35,7 +35,7 @@ plt.show()
 
 
 ### Find Number of Clusters
-x = getData()
+x, _ = getData()
 x, _ = addPCA(x)
 x = removeOutliers(x)
 
@@ -55,11 +55,12 @@ plt.show()
 
 
 ### Create Clusters
-x = getData()
+x, s = getData()
 x, pca = addPCA(x)
+x["sym"] = s
 x = removeOutliers(x)
-y = x[["pc1", "pc2"]]
-x.drop(columns=["pc1", "pc2"], inplace=True)
+y = x[["pc1", "pc2", "sym"]]
+x.drop(columns=["pc1", "pc2", "sym"], inplace=True)
 
 print(x)
 
@@ -72,6 +73,7 @@ centroids = pca.transform(kmeans.cluster_centers_) # scale to same as components
 x['Cluster'] = kmeans.labels_
 x['pc1'] = y['pc1']
 x['pc2'] = y['pc2']
+x['symbol'] = y['sym']
 
 # Plot the centroids
 plt.scatter(x['pc1'], x['pc2'], c=x['Cluster'], cmap='viridis')
@@ -79,6 +81,7 @@ plt.scatter(centroids[:, 0], centroids[:, 1], s=100, c='red', marker='X')
 plt.title('K-means Clustering')
 plt.xlabel('Feature 1')
 plt.ylabel('Feature 2')
+plt.legend()
 plt.show()
 
 # save output

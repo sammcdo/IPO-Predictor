@@ -17,8 +17,9 @@ def getData():
         "Net Income",
         "Est. $ Volume",
     ]
+    s = x["Symbol"]
     x = x[colsToUse]
-    return x
+    return x[colsToUse], s
 
 def addPCA(x):
     # Perform PCA to reduce the data to 2 dimensions for visualization 
@@ -31,8 +32,8 @@ def addPCA(x):
 
 def removeOutliers(X):
     # Remove outliers
-    threshPC1 = X['pc1'].mean() + (2 * X['pc1'].std())
-    threshPC2 = X['pc2'].mean() + (2 * X['pc2'].std())
+    threshPC1 = X['pc1'].mean() + (-0.2 * X['pc1'].std())
+    threshPC2 = X['pc2'].mean() + (-0.2 * X['pc2'].std())
     X = X[X['pc1'] < threshPC1]
     X = X[X['pc2'] < threshPC2]
     return X
