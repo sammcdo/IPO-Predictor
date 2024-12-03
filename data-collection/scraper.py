@@ -75,6 +75,8 @@ def scrape():
         "1st Day Close",
         ], inplace=True)
 
+    df["Offer Price"] = df["Offer Price"].apply(lambda x: float(x.replace("$","")))
+
     # Save the DataFrame to a CSV file
     df.to_csv('data.csv', index=False)
 
@@ -82,3 +84,7 @@ def scrape():
     print(df)
 
     return df
+
+
+if __name__ == "__main__":
+    scrape()

@@ -11,6 +11,7 @@ def getTimeseries(target="ROMA", offer=4.0, debug=False):
     ind = pd.Index([f"Day {i}" for i in range(1,31)])
     ind = ind.append(pd.Index(["Day 60"]))
 
+    # save all the parts of the candle
     cols = ["Open", "High", "Low", "Close"]
 
     output = pd.DataFrame(index=ind, columns=cols)
