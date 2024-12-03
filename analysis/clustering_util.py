@@ -32,8 +32,16 @@ def addPCA(x):
 
 def removeOutliers(X):
     # Remove outliers
-    threshPC1 = X['pc1'].mean() + (-0.2 * X['pc1'].std())
-    threshPC2 = X['pc2'].mean() + (-0.2 * X['pc2'].std())
+    threshPC1 = X['pc1'].mean() + (-.25 * X['pc1'].std())
+    threshPC2 = X['pc2'].mean() + (0.1 * X['pc2'].std())
     X = X[X['pc1'] < threshPC1]
     X = X[X['pc2'] < threshPC2]
     return X
+
+
+if __name__ == "__main__":
+    data = pd.read_csv(getDataPath("data.csv"))
+    stocks = pd.read_csv(getDataPath("stocks.csv"), header=[0,1], index_col=[0])
+
+    
+    print(data, len(data))

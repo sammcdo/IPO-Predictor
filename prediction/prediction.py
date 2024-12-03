@@ -20,7 +20,7 @@ def kpss_test(series, signif=0.05, name='', verbose=True):
 
 # group based on clusters
 group2 = ipos[ipos["Cluster"] == 0]
-group1 = ipos[ipos["Cluster"] == 1]
+group1 = ipos[ipos["Cluster"] == 0]
 
 close = stocks.xs('Close', axis=1, level=1)
 close.index = stocks.index
@@ -63,7 +63,7 @@ forecast_input = g1StockData.values[-lag_order:]
 forecast = results.forecast(y=forecast_input, steps=5)
 forecast_df = pd.DataFrame(forecast, index=[f"Day {i}" for i in range(56, 61)], columns=g1StockData.columns)
 plt.figure(figsize=(12, 6))
-plt.plot(g1StockData.index, g1StockData, label='Original')
+plt.plot(g1StockData.iloc[:-1].index, g1StockData.iloc[:-1], label='Original')
 plt.plot(forecast_df.index, forecast_df, label='Forecast')
 plt.legend()
 plt.show()
