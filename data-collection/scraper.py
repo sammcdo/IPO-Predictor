@@ -80,3 +80,5 @@ def scrape():
 
     # Print the DataFrame to verify
     print(df)
+
+    return df
