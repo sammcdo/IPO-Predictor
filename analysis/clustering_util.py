@@ -15,7 +15,6 @@ def getData():
         "Market Cap",
         "Revenues",
         "Net Income",
-        "Est. $ Volume",
     ]
     s = x["Symbol"]
     x = x[colsToUse]
@@ -32,7 +31,7 @@ def addPCA(x):
 
 def removeOutliers(X):
     # Remove outliers
-    threshPC1 = X['pc1'].mean() + (-.25 * X['pc1'].std())
+    threshPC1 = X['pc1'].mean() + (0.1 * X['pc1'].std())
     threshPC2 = X['pc2'].mean() + (0.1 * X['pc2'].std())
     X = X[X['pc1'] < threshPC1]
     X = X[X['pc2'] < threshPC2]

@@ -9,6 +9,7 @@ for IPO data and saving it to a CSV.
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 
 import subpage
 
@@ -73,11 +74,20 @@ def scrape():
         "Industry_link",
         "SCOOP Rating_link",
         "1st Day Close",
+        "Est. $ Volume",      # not known before stock starts trading
         ], inplace=True)
 
     df["Offer Price"] = df["Offer Price"].apply(lambda x: float(x.replace("$","")))
 
     # Save the DataFrame to a CSV file
+    df.to_csv('data_raw.csv', index=False)
+
+    # scale the data
+    for col in df.select_dtypes(include=['int64', 'float64']).columns:
+        scaler = StandardScaler()
+        df[col] = scaler.fit_transform(df[[col]])
+
+    # save the scaled data
     df.to_csv('data.csv', index=False)
 
     # Print the DataFrame to verify
