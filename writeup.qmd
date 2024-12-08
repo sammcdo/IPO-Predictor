@@ -1,0 +1,41 @@
+---
+title: "IPO Prediction - Honors Petition"
+author: "Sam McDowell"
+date: "12-09-2024"
+date-format: long
+format:
+  #pdf
+  #pptx
+  # docx:
+    # reference-doc: knowles-custom-reference-doc.docx # make sure it is in the same folder as the .qmd
+      # Run this in your python terminal to create a basic reference-doc that you can modify:
+      # quarto pandoc -o custom-reference-doc.docx --print-default-data-file reference.docx
+  html: # or docx for Word Document
+    toc: true # includes table of contents
+    code-fold: true # option for collapsing code blocks in html
+execute:
+  echo: true # includes output
+  warning: false # turns off warnings
+  error: false # if set to true, then stops running at error
+  output: true
+python:
+  version: "3.12.4"  # Specify your Python version here
+  
+---
+
+
+# IPO Prediction
+Honors Petition Project
+
+Liberty University - School of Business
+
+### Introduction
+The stock market is an amazing resource for those wishing to make money. In fact, as much as $300 billion changes hands on the stock market every day (nasdaqtrader.com). With the rise of machine learning and artificial intelligence, much research has been done to predict these markets. Someone in possession of an accurate prediction method could make untold amounts of money by knowing when to buy and sell. There are approximately 8,000 stocks eligible for trading in the US stock market (NYSE). Before a stock can be publically traded on the stock market, it must go through a process called an Initial Public Offering, or IPO (Fernando, 2024). The time when a company first releases shares to the public is a time of extreme volatility and therefore a time when large profit can be made. This study attempts to predict the stock performance of an IPO by grouping it with similar IPOs and performing a forecast.
+
+### Literature Review
+
+
+
+---
+### References
+Daily Market Summary. (n.d.). Retrieved from www.nasdaqtrader.com website: https://www.nasdaqtrader.com/Trader.aspx?id=DailyMarketSummary
