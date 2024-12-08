@@ -39,6 +39,7 @@ def getFromSubpage(url):
     return data
 
 
+### Tests
 if __name__ == "__main__":
     url = "https://www.iposcoop.com/ipo/rubrik-inc/"
     data = getFromSubpage(url)

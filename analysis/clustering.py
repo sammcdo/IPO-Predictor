@@ -25,6 +25,7 @@ plt.show()
 x, _ = getData()
 x, _ = addPCA(x)
 x = removeOutliers(x)
+print(x)
 
 # Add plot the ipos
 plt.scatter(x['pc1'], x['pc2'], cmap='viridis')
@@ -55,14 +56,12 @@ plt.show()
 
 
 ### Create Clusters
-x, s = getData()
+x, s = getData(includeClusters=False)
 x, pca = addPCA(x)
-x["sym"] = s
+x["symbol"] = s
 x = removeOutliers(x)
-y = x[["pc1", "pc2", "sym"]]
-x.drop(columns=["pc1", "pc2", "sym"], inplace=True)
-
-print(x)
+y = x[["pc1", "pc2", "symbol"]]
+x.drop(columns=["pc1", "pc2", "symbol"], inplace=True)
 
 # Create KMeans instance with 2 clusters
 kmeans = KMeans(n_clusters=2)
@@ -71,9 +70,14 @@ kmeans.fit(x)
 # Get the cluster labels
 centroids = pca.transform(kmeans.cluster_centers_) # scale to same as components
 x['Cluster'] = kmeans.labels_
-x['pc1'] = y['pc1']
-x['pc2'] = y['pc2']
-x['symbol'] = y['sym']
+for c in y.columns:
+    x[c] = y[c]
+
+old, s = getData(includeClusters=True)
+old["symbol"] = s
+old = old[old["symbol"].isin(x['symbol'])]
+x["Industry_Cluster"] = old["Industry_Cluster"]
+x["Month_Cluster"] = old["Month_Cluster"]
 
 # Plot the centroids
 plt.scatter(x['pc1'], x['pc2'], c=x['Cluster'], cmap='viridis')

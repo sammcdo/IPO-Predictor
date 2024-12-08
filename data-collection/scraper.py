@@ -1,6 +1,6 @@
 """
 Sam McDowell
-11/25/2024
+12/09/2024
 
 Scraping www.iposcoop.com/current-year-pricings/
 for IPO data and saving it to a CSV.
@@ -9,7 +9,7 @@ for IPO data and saving it to a CSV.
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 
 import subpage
 
@@ -86,6 +86,11 @@ def scrape():
     for col in df.select_dtypes(include=['int64', 'float64']).columns:
         scaler = StandardScaler()
         df[col] = scaler.fit_transform(df[[col]])
+    
+    # Clusters by industry and by month of IPO
+    le = LabelEncoder()
+    df["Industry_Cluster"] = le.fit_transform(df["Industry"])
+    df["Month_Cluster"] = df["Offer Date"].apply(lambda x: int(x.split("/")[0]))
 
     # save the scaled data
     df.to_csv('data.csv', index=False)

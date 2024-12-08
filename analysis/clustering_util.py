@@ -7,7 +7,7 @@ import pandas as pd
 from util import *
 
 
-def getData():
+def getData(includeClusters = False):
     x = pd.read_csv(getDataPath("data.csv"))
     colsToUse = [
         "Shares (millions)",
@@ -16,11 +16,17 @@ def getData():
         "Revenues",
         "Net Income",
     ]
+    if includeClusters:
+        colsToUse.extend([
+            "Industry_Cluster",
+            "Month_Cluster"
+        ])
     s = x["Symbol"]
     x = x[colsToUse]
     return x[colsToUse], s
 
 def addPCA(x):
+    print("pca", x)
     # Perform PCA to reduce the data to 2 dimensions for visualization 
     pca = PCA(n_components=2) 
     principal_components = pca.fit_transform(x) 
@@ -29,13 +35,13 @@ def addPCA(x):
     x['pc2'] = principal_df['pc2']
     return x, pca
 
-def removeOutliers(X):
+def removeOutliers(x):
     # Remove outliers
-    threshPC1 = X['pc1'].mean() + (0.1 * X['pc1'].std())
-    threshPC2 = X['pc2'].mean() + (0.1 * X['pc2'].std())
-    X = X[X['pc1'] < threshPC1]
-    X = X[X['pc2'] < threshPC2]
-    return X
+    threshPC1 = x['pc1'].mean() + (0.1 * x['pc1'].std())
+    threshPC2 = x['pc2'].mean() + (0.1 * x['pc2'].std())
+    x = x[x['pc1'] < threshPC1]
+    x = x[x['pc2'] < threshPC2]
+    return x
 
 
 if __name__ == "__main__":
