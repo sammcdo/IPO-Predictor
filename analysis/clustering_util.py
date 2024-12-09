@@ -4,7 +4,7 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from util import *
+from analysis.util import *
 
 
 def getData(includeClusters = False):
@@ -26,7 +26,6 @@ def getData(includeClusters = False):
     return x[colsToUse], s
 
 def addPCA(x):
-    print("pca", x)
     # Perform PCA to reduce the data to 2 dimensions for visualization 
     pca = PCA(n_components=2) 
     principal_components = pca.fit_transform(x) 

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -31,11 +65,40 @@ ul.task-list li input[type="checkbox"] {
 <script src="writeup_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="writeup_files/libs/quarto-html/anchor.min.js"></script>
 <link href="writeup_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="writeup_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="writeup_files/libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="writeup_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="writeup_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="writeup_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="writeup_files/libs/bootstrap/bootstrap-8a79a254b8e706d3c925cde0a310d4f0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -49,7 +112,13 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#ipo-prediction" id="toc-ipo-prediction" class="nav-link active" data-scroll-target="#ipo-prediction">IPO Prediction</a>
   <ul class="collapse">
+  <li><a href="#abstract" id="toc-abstract" class="nav-link" data-scroll-target="#abstract">Abstract</a></li>
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
+  <li><a href="#opportunities-for-future-research" id="toc-opportunities-for-future-research" class="nav-link" data-scroll-target="#opportunities-for-future-research">Opportunities for Future Research</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
@@ -92,14 +161,3211 @@ ul.task-list li input[type="checkbox"] {
 <h1>IPO Prediction</h1>
 <p>Honors Petition Project</p>
 <p>Liberty University - School of Business</p>
+<section id="abstract" class="level3">
+<h3 class="anchored" data-anchor-id="abstract">Abstract</h3>
+<p>This study investigates the prediction of the stock price of an Initial Public Offering (IPO) shortly after its listing by grouping similar IPOs based on financial data and using time series forecasting techniques. The research utilizes data compiled from IPO Scoop and Yahoo Finance, before applying K-Means clustering based on financial information, industry and time of IPO. A Vector Autoregression (VAR) model is then used to forecast stock performance within each group. Despite the clustering technique used, the results showed that financial data alone did not group IPOs with similar stock market reactions. Additionally, issues with stationarity, autocorrelation and causality in the stock data limited the predictive performance of the VAR model. Future research opportunities include expanding the amount of data observed, exploring advanced stationarizing methods, and investigating alternative machine learning models for improved IPO prediction accuracy.</p>
+</section>
 <section id="introduction" class="level3">
 <h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
-<p>The stock market is an amazing resource for those wishing to make money. In fact, as much as $300 billion changes hands on the stock market every day (nasdaqtrader.com). With the rise of machine learning and artificial intelligence, much research has been done to predict these markets. Someone in possession of an accurate prediction method could make untold amounts of money by knowing when to buy and sell. There are approximately 8,000 stocks eligible for trading in the US stock market (NYSE). Before a stock can be publically traded on the stock market, it must go through a process called an Initial Public Offering, or IPO (Fernando, 2024).</p>
-<hr>
+<p>The stock market is an amazing resource for those wishing to make money. In fact, as much as $300 billion changes hands on the stock market every day (nasdaqtrader.com). With the rise of machine learning and artificial intelligence, much research has been done to predict these markets. Someone in possession of an accurate prediction method could make untold amounts of money by knowing when to buy and sell. There are approximately 8,000 stocks eligible for trading in the US stock market (NYSE). Before a stock can be publically traded on the stock market, it must go through a process called an Initial Public Offering, or IPO (Fernando, 2024). The time when a company first releases shares to the public is a time of extreme volatility and therefore a time when large profit can be made. This study attempts to predict the stock performance of an IPO by grouping it with similar IPOs and performing a forecast.</p>
+<p>This study collects datasets of IPO financials and stock data. The data is then clustered and grouped for analysis. A multivariate autoregressive model is used to make predictions on the stocks in a group based on the time series of their prices. The results and implications will be fully explored.</p>
+</section>
+<section id="methods" class="level3">
+<h3 class="anchored" data-anchor-id="methods">Methods</h3>
+<p>To begin, data was collected for the grouping and forecasting. The first dataset is from IPO Scoop. It includes a company name, the company’s symbol, the industry that company is in, the date that stock was first offered publicly, the number of shares offered, how much it cost when it was offered, the market cap of the company, its revenue and its net income. Each of those data points were standardized using Scikit-Learn’s Standard Scaler, which transforms the data to have a mean of 0 and a standard deviation of 1 (scikit-learn.org, 2024, StandardScaler).</p>
+<p>A second dataset was collected through Yahoo Finance. This data consisted of the first 60 day candles of the IPO’s public response. This data included the open, high, low and close price, as well as the volume of shares traded on that day.</p>
+<p>Once those datasets were collected, the grouping of similar stocks was performed. The primary method of grouping IPOs together for this study was K-Means clustering. This was done using the financial information dataset. The data was clustered into two groups. The data was again grouped by industry where all those stocks from the same industry were put in a group. It was also grouped by month of IPO, where all stocks that launched in the same month were put in a group.</p>
+<p>Finally, time series analysis was performed to make a forecast from the stock data of the stocks in a given group. This was done using Vector Autoregression (or VAR). The first 55 days of stock performance for a group of stocks were used to fit a VAR model. This was tested on the clusters created by K-Means Clustering, the groups created by industry and the groups created by month of IPO.</p>
+</section>
+<section id="results" class="level3">
+<h3 class="anchored" data-anchor-id="results">Results</h3>
+<p>When the data was clustered there were a lot of outliers when visualizing them based on two principal components. The first principal component was primarily based on the number of shares of the company. The second was based on the remaining data points with a roughly even split.</p>
+<div id="5cc11e25" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> analysis.clustering_util <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>x, _ <span class="op">=</span> getData()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>x, pca <span class="op">=</span> addPCA(x)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(pca.components_)):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Component </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>, pca.components_[i])</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\t</span><span class="st">Explained Variance:"</span>, pca.explained_variance_ratio_[i])</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the ipos</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>plt.scatter(x[<span class="st">'pc1'</span>], x[<span class="st">'pc2'</span>], cmap<span class="op">=</span><span class="st">'viridis'</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Visualize IPOs'</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'PC 1'</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'PC 2'</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Component 1 [0.99783894 0.03052901 0.04543049 0.02070526 0.02987977]
+    Explained Variance: 0.9841593409460709
+Component 2 [-0.06407769  0.53952155  0.52025562  0.31929104  0.57636609]
+    Explained Variance: 0.008320573663589195</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-2-output-2.png" width="594" height="449" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>These outliers were removed by dropping IPOs that were farther from the mean of the principal components. This allowed for a much tighter grouping.</p>
+<div id="dd9bc69d" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> analysis.clustering_util <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>x, _ <span class="op">=</span> getData()</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>x, _ <span class="op">=</span> addPCA(x)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> removeOutliers(x)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Add plot the ipos</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>plt.scatter(x[<span class="st">'pc1'</span>], x[<span class="st">'pc2'</span>], cmap<span class="op">=</span><span class="st">'viridis'</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Visualize IPOs w/o Outliers'</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'PC 1'</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'PC 2'</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-3-output-1.png" width="602" height="449" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Once the outliers were removed it was necessary to determine how many clusters the K-Means algorithm should create. The K-Means algorithm requires a set number of groups before performing a clustering (scikit-learn, 2019, K-Means). An elbow plot was created, and it was shown that the ideal number of clusters was 2. Then the K-Means algorithm was run and the two clusters were created.</p>
+<div id="b1b811db" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> analysis.clustering_util <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>x, _ <span class="op">=</span> getData()</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>x, _ <span class="op">=</span> addPCA(x)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> removeOutliers(x)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate WCSS for different number of clusters</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>wcss <span class="op">=</span> []</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">16</span>):</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>i, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    kmeans.fit(x)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    wcss.append(kmeans.inertia_)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># show the elbow plot</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">16</span>), wcss, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Elbow Method'</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Number of Clusters'</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Within-Cluster Sum of Squares (WCSS)'</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-4-output-1.png" width="603" height="449" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="c1a027ea" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> analysis.clustering_util <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>x, s <span class="op">=</span> getData(includeClusters<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>x, pca <span class="op">=</span> addPCA(x)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>x[<span class="st">"symbol"</span>] <span class="op">=</span> s</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> removeOutliers(x)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> x[[<span class="st">"pc1"</span>, <span class="st">"pc2"</span>, <span class="st">"symbol"</span>]]</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>x.drop(columns<span class="op">=</span>[<span class="st">"pc1"</span>, <span class="st">"pc2"</span>, <span class="st">"symbol"</span>], inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create KMeans instance with 2 clusters</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>kmeans.fit(x)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the cluster labels</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>centroids <span class="op">=</span> pca.transform(kmeans.cluster_centers_) <span class="co"># scale to same as components</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>x[<span class="st">'Cluster'</span>] <span class="op">=</span> kmeans.labels_</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> y.columns:</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    x[c] <span class="op">=</span> y[c]</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>old, s <span class="op">=</span> getData(includeClusters<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>old[<span class="st">"symbol"</span>] <span class="op">=</span> s</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>old <span class="op">=</span> old[old[<span class="st">"symbol"</span>].isin(x[<span class="st">'symbol'</span>])]</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>x[<span class="st">"Industry_Cluster"</span>] <span class="op">=</span> old[<span class="st">"Industry_Cluster"</span>]</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>x[<span class="st">"Month_Cluster"</span>] <span class="op">=</span> old[<span class="st">"Month_Cluster"</span>]</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the centroids</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>plt.scatter(x[<span class="st">'pc1'</span>], x[<span class="st">'pc2'</span>], c<span class="op">=</span>x[<span class="st">'Cluster'</span>], cmap<span class="op">=</span><span class="st">'viridis'</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>plt.scatter(centroids[:, <span class="dv">0</span>], centroids[:, <span class="dv">1</span>], s<span class="op">=</span><span class="dv">100</span>, c<span class="op">=</span><span class="st">'red'</span>, marker<span class="op">=</span><span class="st">'X'</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'K-means Clustering'</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'PC 1'</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'PC 2'</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-5-output-1.png" width="602" height="449" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The groups from the clustered data were log transformed and tested for stationarity using the Augmented Dickey-Fuller test and the KPSS test. The data is also tested for autocorrelation using the Durbin-Watson test and for causality with the Granger Causality test.</p>
+<details>
+<summary>
+Show Results of Stationarity and Correlation Tests
+</summary>
+<div id="76aa1676" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> prediction.prediction_util <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>stocks <span class="op">=</span> pd.read_csv(<span class="st">"data-collection/stocks.csv"</span>, header<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">1</span>], index_col<span class="op">=</span>[<span class="dv">0</span>])</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>ipos <span class="op">=</span> pd.read_csv(<span class="st">"analysis/clustered.csv"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>group1 <span class="op">=</span> ipos[ipos[<span class="st">"Cluster"</span>] <span class="op">==</span> <span class="dv">1</span>]</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>close <span class="op">=</span> stocks.xs(<span class="st">'Close'</span>, axis<span class="op">=</span><span class="dv">1</span>, level<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>close.index <span class="op">=</span> stocks.index</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>g1StockData <span class="op">=</span> getGroupClosingPrices(group1, close)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> g1StockData.columns:</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># p = PowerTransformer(method='box-cox')</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># g1StockData[c] = p.fit_transform(g1StockData[[c]])</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># lambdas[c] = p</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    g1StockData[c] <span class="op">=</span> g1StockData[c].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x) <span class="cf">if</span> x <span class="op">!=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># g1StockData[c] = g1StockData[c].diff()</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># g1StockData[c].dropna(inplace=True)</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    ts, p, lags <span class="op">=</span> adf_test(g1StockData[c].dropna())</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    tsK, pK, lagsK <span class="op">=</span> kpss_test(g1StockData[c].dropna())</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    db <span class="op">=</span> durbinWatson_test(g1StockData[c].dropna())</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(c)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Test Statistic:  ADF: </span><span class="sc">{</span><span class="bu">round</span>(ts, <span class="dv">5</span>)<span class="sc">}</span><span class="ch">\t</span><span class="ss"> KPSS: </span><span class="sc">{</span><span class="bu">round</span>(tsK, <span class="dv">5</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"P-Value:         ADF: </span><span class="sc">{</span><span class="bu">round</span>(p, <span class="dv">5</span>)<span class="sc">}</span><span class="ch">\t</span><span class="ss"> KPSS: </span><span class="sc">{</span><span class="bu">round</span>(pK, <span class="dv">5</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"DurbinWatson: </span><span class="sc">%.5f</span><span class="st">"</span> <span class="op">%</span> db)</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    others <span class="op">=</span> [x <span class="cf">for</span> x <span class="kw">in</span> g1StockData.columns <span class="cf">if</span> x <span class="op">!=</span> c]</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    gc <span class="op">=</span> {}</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Granger Causality Tests"</span>)</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> others:</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>        gc[x] <span class="op">=</span> <span class="bu">min</span>(granger_test(g1StockData[c], g1StockData[x]).values())</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(x, gc[x])</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> p <span class="op">&gt;</span> <span class="fl">0.05</span> <span class="kw">and</span> pK <span class="op">&lt;</span> <span class="fl">0.05</span>:</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>        g1StockData.drop(columns<span class="op">=</span>c, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>CEP
+Test Statistic:  ADF: -4.87106   KPSS: 0.1238
+P-Value:         ADF: 0.00035    KPSS: 0.0911
+DurbinWatson: 2.60440
+Granger Causality Tests
+PCSC 0.018398930051991544
+RAPP 0.008267953926903267
+BOW 0.05741566079961837
+SVCO 0.0121665509297127
+SERV 2.569131905239486e-10
+CTNM 0.02967932533155508
+BOLD 0.18356175675065428
+MGX 0.06379038435606435
+ANRO 0.20632205725568947
+GUTS 0.0878093488952149
+AVBP 0.004055205046340644
+PSBD 0.3979728065556022
+
+PCSC
+Test Statistic:  ADF: -4.62428   KPSS: 0.1262
+P-Value:         ADF: 0.00094    KPSS: 0.08668
+DurbinWatson: 2.38954
+Granger Causality Tests
+CEP 0.7253002930981398
+RAPP 0.43459609424848644
+BOW 0.359057709271086
+SVCO 0.040303422753851424
+SERV 0.41501878912969214
+CTNM 0.7253418581320649
+BOLD 0.2663773523258561
+MGX 0.03906736884873641
+ANRO 0.0014636482375851685
+GUTS 0.16652633698950112
+AVBP 0.1503057139056179
+PSBD 0.13942511575564365
+
+RAPP
+Test Statistic:  ADF: -4.32761   KPSS: 0.09268
+P-Value:         ADF: 0.00285    KPSS: 0.1
+DurbinWatson: 2.49984
+Granger Causality Tests
+CEP 0.1491025289315778
+PCSC 0.24683257178984666
+BOW 0.0015308497938752474
+SVCO 0.271968704424047
+SERV 2.964543549643123e-06
+CTNM 0.32712422924875234
+BOLD 0.3800796264120684
+MGX 0.07417145017904349
+ANRO 0.061289219354879194
+GUTS 0.6670089867081552
+AVBP 0.1567205804916075
+PSBD 0.2699846396119399
+
+BOW
+Test Statistic:  ADF: -3.50887   KPSS: 0.09492
+P-Value:         ADF: 0.03845    KPSS: 0.1
+DurbinWatson: 1.99343
+Granger Causality Tests
+CEP 0.08187624065376915
+PCSC 0.07820943168985632
+RAPP 0.0015354569942819976
+SVCO 0.10987423303731886
+SERV 0.00841786882017044
+CTNM 0.27012954328021144
+BOLD 0.4872434826867401
+MGX 0.008223209264913298
+ANRO 0.13760515087361985
+GUTS 0.44831944555222236
+AVBP 0.07073941992246385
+PSBD 0.5639070614036178
+
+SVCO
+Test Statistic:  ADF: -2.11824   KPSS: 0.09272
+P-Value:         ADF: 0.53587    KPSS: 0.1
+DurbinWatson: 2.23338
+Granger Causality Tests
+CEP 0.06902017530568726
+PCSC 0.1567415593481579
+RAPP 0.44857759326255353
+BOW 0.10823394282139179
+SERV 0.8051005120915178
+CTNM 0.10307672725747383
+BOLD 0.22386537760437183
+MGX 0.332347794853642
+ANRO 0.2099719303448638
+GUTS 0.2988377874132186
+AVBP 0.04336817680056798
+PSBD 0.2892461037832255
+
+SERV
+Test Statistic:  ADF: -8.96804   KPSS: 0.11209
+P-Value:         ADF: 0.0    KPSS: 0.1
+DurbinWatson: 1.11358
+Granger Causality Tests
+CEP 0.06462052848771162
+PCSC 0.1892794558040669
+RAPP 8.896077916219496e-05
+BOW 0.0027888334075957142
+SVCO 0.42176447390128335
+CTNM 0.20765494226960765
+BOLD 0.6789097631385217
+MGX 0.01939890198032806
+ANRO 0.15884854366484147
+GUTS 0.07064977547159591
+AVBP 0.0037905861095408554
+PSBD 0.44058983289404186
+
+CTNM
+Test Statistic:  ADF: 0.80003    KPSS: 0.15447
+P-Value:         ADF: 1.0    KPSS: 0.04294
+DurbinWatson: 2.20008
+Granger Causality Tests
+CEP 0.058906305734582824
+PCSC 0.021638659116818077
+RAPP 0.30008368477227115
+BOW 0.15410656418381666
+SVCO 0.005122683164076716
+SERV 0.05881123113837669
+BOLD 0.012558127613428166
+MGX 0.33044012194744693
+ANRO 0.2936603137581739
+GUTS 0.5360551466000933
+AVBP 0.027862877896793453
+PSBD 0.23607031550233595
+
+BOLD
+Test Statistic:  ADF: -1.4041    KPSS: 0.11033
+P-Value:         ADF: 0.8597     KPSS: 0.1
+DurbinWatson: 1.82203
+Granger Causality Tests
+CEP 0.04356706658795905
+PCSC 0.03775419194608621
+RAPP 0.053533023327477704
+BOW 0.019801000619290934
+SVCO 0.005790308756127357
+SERV 0.03134746227526417
+MGX 0.16734535491985691
+ANRO 0.4886258573085557
+GUTS 0.617136139698123
+AVBP 0.008347740411823654
+PSBD 0.1930252113473966
+
+MGX
+Test Statistic:  ADF: -2.82966   KPSS: 0.16411
+P-Value:         ADF: 0.18626    KPSS: 0.0349
+DurbinWatson: 2.03101
+Granger Causality Tests
+CEP 0.000663349102709499
+PCSC 0.04670514351062663
+RAPP 0.1651709562152099
+BOW 0.01778559410392999
+SVCO 0.02357217844753844
+SERV 0.0005631330697704794
+BOLD 0.03285320346685174
+ANRO 0.538488128707094
+GUTS 0.07606586130611459
+AVBP 0.049464801975924136
+PSBD 0.4081812810686565
+
+ANRO
+Test Statistic:  ADF: -3.01873   KPSS: 0.09723
+P-Value:         ADF: 0.12692    KPSS: 0.1
+DurbinWatson: 1.78261
+Granger Causality Tests
+CEP 0.11201327208601963
+PCSC 0.0458022369186799
+RAPP 0.3472755559698738
+BOW 0.1348123730957287
+SVCO 0.08796906843321683
+SERV 0.2852377036252603
+BOLD 0.29966270734746264
+GUTS 0.06029185132202115
+AVBP 0.03646614043962709
+PSBD 0.19640297548897914
+
+GUTS
+Test Statistic:  ADF: -3.45481   KPSS: 0.08782
+P-Value:         ADF: 0.04448    KPSS: 0.1
+DurbinWatson: 1.66913
+Granger Causality Tests
+CEP 0.023061061783352637
+PCSC 0.007030840590820504
+RAPP 0.00027722097377959364
+BOW 0.03619210221331742
+SVCO 0.19619121305951717
+SERV 0.0037801175651760812
+BOLD 0.4186587552080332
+ANRO 0.09487739164133752
+AVBP 0.00030409943489079894
+PSBD 0.26722969222751713
+
+AVBP
+Test Statistic:  ADF: -3.65177   KPSS: 0.13849
+P-Value:         ADF: 0.02574    KPSS: 0.0639
+DurbinWatson: 2.48813
+Granger Causality Tests
+CEP 0.018154827029324288
+PCSC 0.241929250177746
+RAPP 0.004680924445177441
+BOW 0.04886560649480386
+SVCO 0.26927624224636953
+SERV 2.492120189140341e-07
+BOLD 0.07605732902465005
+ANRO 0.8189941911585441
+GUTS 0.28126009001128
+PSBD 0.5325622151333134
+
+PSBD
+Test Statistic:  ADF: -3.62758   KPSS: 0.08807
+P-Value:         ADF: 0.02759    KPSS: 0.1
+DurbinWatson: 2.55556
+Granger Causality Tests
+CEP 0.28346592934572545
+PCSC 0.2525818375421246
+RAPP 0.4643586566096587
+BOW 0.2727132098706565
+SVCO 0.027263023113685864
+SERV 0.17495528105213884
+BOLD 0.1688591650549159
+ANRO 0.3709951453581626
+GUTS 0.22173312173355147
+AVBP 0.16875412103652332
+</code></pre>
+</div>
+</div>
+</details>
+<div id="9d52bc5f" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.8</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> g1StockData.columns:</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    plt.plot(g1StockData.index, g1StockData[c].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.exp(x) <span class="cf">if</span> x <span class="op">!=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span>), label<span class="op">=</span>c)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">90</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-7-output-1.png" width="717" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Once the clusters were created, the stocks from that cluster were given to the VAR model. The small cluster was analyzed.</p>
+<div id="df67381b" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tools.sm_exceptions <span class="im">import</span> ValueWarning</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> prediction.prediction_util <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.api <span class="im">import</span> VAR</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_absolute_error, mean_squared_error</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>, category<span class="op">=</span>ValueWarning)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>stocks <span class="op">=</span> pd.read_csv(<span class="st">"data-collection/stocks.csv"</span>, header<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">1</span>], index_col<span class="op">=</span>[<span class="dv">0</span>])</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>ipos <span class="op">=</span> pd.read_csv(<span class="st">"analysis/clustered.csv"</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>group1 <span class="op">=</span> ipos[ipos[<span class="st">"Cluster"</span>] <span class="op">==</span> <span class="dv">1</span>]</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>close <span class="op">=</span> stocks.xs(<span class="st">'Close'</span>, axis<span class="op">=</span><span class="dv">1</span>, level<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>close.index <span class="op">=</span> stocks.index</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>g1StockData <span class="op">=</span> getGroupClosingPrices(group1, close)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> g1StockData.columns:</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># p = PowerTransformer(method='box-cox')</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># g1StockData[c] = p.fit_transform(g1StockData[[c]])</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># lambdas[c] = p</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    g1StockData[c] <span class="op">=</span> g1StockData[c].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x) <span class="cf">if</span> x <span class="op">!=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># g1StockData[c] = g1StockData[c].diff()</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># g1StockData[c].dropna(inplace=True)</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    ts, p, lags <span class="op">=</span> adf_test(g1StockData[c].dropna())</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    tsK, pK, lagsK <span class="op">=</span> kpss_test(g1StockData[c].dropna())</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    db <span class="op">=</span> durbinWatson_test(g1StockData[c].dropna())</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> p <span class="op">&gt;</span> <span class="fl">0.05</span> <span class="kw">and</span> pK <span class="op">&lt;</span> <span class="fl">0.05</span>:</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>        g1StockData.drop(columns<span class="op">=</span>c, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>date_labels <span class="op">=</span> pd.date_range(start<span class="op">=</span><span class="st">'2024-01-01'</span>, periods<span class="op">=</span><span class="dv">60</span>, freq<span class="op">=</span><span class="st">'D'</span>)</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>g1StockData[<span class="st">"date"</span>] <span class="op">=</span> date_labels</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>g1StockData.set_index(<span class="st">"date"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> VAR(g1StockData.iloc[:<span class="op">-</span><span class="dv">5</span>])</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> model.fit(maxlags<span class="op">=</span><span class="dv">1</span>, ic<span class="op">=</span><span class="st">'aic'</span>)</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>lag_order <span class="op">=</span> results.k_ar</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>forecast_input <span class="op">=</span> g1StockData.values[<span class="op">-</span>(lag_order):]</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>forecast <span class="op">=</span> results.forecast(y<span class="op">=</span>forecast_input, steps<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>forecast_df <span class="op">=</span> pd.DataFrame(forecast, index<span class="op">=</span>[<span class="ss">f"Day </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">56</span>, <span class="dv">61</span>)], columns<span class="op">=</span>g1StockData.columns)</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>g1StockData.index <span class="op">=</span> [<span class="ss">f"Day </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">61</span>)]</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> forecast_df.columns:</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>    g1StockData[c] <span class="op">=</span> g1StockData[c].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.exp(x) <span class="cf">if</span> x <span class="op">!=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>    forecast_df[c] <span class="op">=</span> forecast_df[c].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.exp(x) <span class="cf">if</span> x <span class="op">!=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.8</span>))</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(g1StockData.columns):</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>    plt.plot(g1StockData.iloc[:<span class="op">-</span><span class="dv">5</span>].index, g1StockData[c].iloc[:<span class="op">-</span><span class="dv">5</span>], label<span class="op">=</span>c)</span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(g1StockData.columns):</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>    plt.plot(forecast_df.index, <span class="bu">list</span>(forecast_df.iloc[:, i]), color<span class="op">=</span>plt.gca().lines[i].get_color(), label<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">90</span>)</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>correct <span class="op">=</span> g1StockData.iloc[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> forecast_df.iloc[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>prev <span class="op">=</span> g1StockData.iloc[<span class="op">-</span><span class="dv">2</span>]</span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>error <span class="op">=</span> <span class="bu">abs</span>(correct <span class="op">-</span> pred)</span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>errorPct <span class="op">=</span> error <span class="op">/</span> correct <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.DataFrame({<span class="st">"correct"</span>:correct, <span class="st">"pred"</span>:pred, <span class="st">"prev"</span>:prev, <span class="st">"errorPct"</span>:errorPct, <span class="st">"error"</span>:error})</span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(results)</span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate MAE</span></span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a>mae <span class="op">=</span> mean_absolute_error(results[<span class="st">'correct'</span>], results[<span class="st">'pred'</span>])</span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Absolute Error:'</span>, mae)</span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate MSE</span></span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a>mse <span class="op">=</span> mean_squared_error(results[<span class="st">'correct'</span>], results[<span class="st">'pred'</span>])</span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Squared Error:'</span>, mse)</span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a>errorPct <span class="op">=</span> []</span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(correct)):</span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> correct.iloc[i] <span class="op">&lt;</span> prev.iloc[i] <span class="kw">and</span> pred.iloc[i] <span class="op">&lt;</span> prev.iloc[i]:</span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a>        count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> correct.iloc[i] <span class="op">&gt;</span> prev.iloc[i] <span class="kw">and</span> pred.iloc[i] <span class="op">&gt;</span> prev.iloc[i]:</span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a>        count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a>    errorPct.append(<span class="bu">abs</span>(correct.iloc[i] <span class="op">-</span> pred.iloc[i]) <span class="op">/</span> correct.iloc[i] <span class="op">*</span> <span class="dv">100</span>)</span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Percent Directionally Correct:"</span>, count <span class="op">/</span> <span class="bu">len</span>(correct), <span class="ss">f"(</span><span class="sc">{</span>count<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(correct)<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MAE of Percent Error:"</span>, <span class="bu">sum</span>(results[<span class="st">"errorPct"</span>]) <span class="op">/</span> <span class="bu">len</span>(results))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-8-output-1.png" width="717" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        correct       pred       prev   errorPct     error
+CEP   10.070000  10.052977  10.070000   0.169043  0.017023
+PCSC  10.050000  10.087239  10.050000   0.370537  0.037239
+RAPP  20.240000  19.579422  21.750000   3.263726  0.660578
+BOW   27.840000  27.296792  26.950001   1.951178  0.543208
+SVCO  16.180000  17.306084  15.880000   6.959726  1.126084
+SERV   2.800000   1.797361   2.880000  35.808534  1.002639
+BOLD   5.410000   7.359080   4.770000  36.027351  1.949080
+ANRO  15.560000  15.782397  14.180000   1.429287  0.222397
+GUTS   6.980000   7.280076   6.700000   4.299082  0.300076
+AVBP  15.900000  15.026402  15.500000   5.494325  0.873598
+PSBD  16.110001  16.617865  16.290001   3.152482  0.507865
+Mean Absolute Error: 0.6581623048931214
+Mean Squared Error: 0.7241801019328876
+Percent Directionally Correct: 0.6363636363636364 (7/11)
+MAE of Percent Error: 8.993206453218596</code></pre>
+</div>
+</div>
+<p>Then the clusters were analyzed by industry group.</p>
+<details>
+<summary>
+Show results of Industry Group Tests
+</summary>
+<div id="842d35d2" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tools.sm_exceptions <span class="im">import</span> ValueWarning</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> prediction.prediction_util <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.api <span class="im">import</span> VAR</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_absolute_error, mean_squared_error</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>, category<span class="op">=</span>ValueWarning)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>stocks <span class="op">=</span> pd.read_csv(<span class="st">"data-collection/stocks.csv"</span>, header<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">1</span>], index_col<span class="op">=</span>[<span class="dv">0</span>])</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>ipos <span class="op">=</span> pd.read_csv(<span class="st">"analysis/clustered.csv"</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>industriesLabels <span class="op">=</span> [</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Basic Materials"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Blank Check"</span>,</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Consumer Goods"</span>,</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Consumer Services"</span>,</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Financials"</span>,</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Health Care"</span>,</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Industrials"</span>,</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Oil and Gas"</span>,</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Other"</span>,</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Technology"</span>,</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Utilities"</span>,</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> INUM, ILABEL <span class="kw">in</span> <span class="bu">enumerate</span>(industriesLabels):</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> INUM <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>)</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"INDUSTRY:"</span>, ILABEL)</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    group1 <span class="op">=</span> ipos[ipos[<span class="st">"Industry_Cluster"</span>] <span class="op">==</span> INUM]</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>    close <span class="op">=</span> stocks.xs(<span class="st">'Close'</span>, axis<span class="op">=</span><span class="dv">1</span>, level<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    close.index <span class="op">=</span> stocks.index</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>    g1StockData <span class="op">=</span> getGroupClosingPrices(group1, close)</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> g1StockData.columns:</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>        g1StockData[c] <span class="op">=</span> g1StockData[c].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x) <span class="cf">if</span> x <span class="op">!=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>        ts, p, lags <span class="op">=</span> adf_test(g1StockData[c].dropna())</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>        tsK, pK, lagsK <span class="op">=</span> kpss_test(g1StockData[c].dropna())</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>        db <span class="op">=</span> durbinWatson_test(g1StockData[c].dropna())</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(c)</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Test Statistic:  ADF: </span><span class="sc">{</span><span class="bu">round</span>(ts, <span class="dv">5</span>)<span class="sc">}</span><span class="ch">\t</span><span class="ss"> KPSS: </span><span class="sc">{</span><span class="bu">round</span>(tsK, <span class="dv">5</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"P-Value:         ADF: </span><span class="sc">{</span><span class="bu">round</span>(p, <span class="dv">5</span>)<span class="sc">}</span><span class="ch">\t</span><span class="ss"> KPSS: </span><span class="sc">{</span><span class="bu">round</span>(pK, <span class="dv">5</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"DurbinWatson: </span><span class="sc">%.5f</span><span class="st">"</span> <span class="op">%</span> db)</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>        others <span class="op">=</span> [x <span class="cf">for</span> x <span class="kw">in</span> g1StockData.columns <span class="cf">if</span> x <span class="op">!=</span> c]</span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>        gc <span class="op">=</span> {}</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Granger Causality Tests"</span>)</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> x <span class="kw">in</span> others:</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>            gc[x] <span class="op">=</span> <span class="bu">min</span>(granger_test(g1StockData[c], g1StockData[x]).values())</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(x, gc[x])</span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> p <span class="op">&gt;</span> <span class="fl">0.05</span> <span class="kw">and</span> pK <span class="op">&lt;</span> <span class="fl">0.05</span>:</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>            g1StockData.drop(columns<span class="op">=</span>c, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>()</span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(g1StockData.columns) <span class="op">&lt;</span> <span class="dv">2</span>:</span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Insufficient number of symbols after preprocessing"</span>)</span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>    g1StockData <span class="op">=</span> g1StockData.iloc[:, <span class="dv">0</span>:<span class="dv">15</span>]</span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>    date_labels <span class="op">=</span> pd.date_range(start<span class="op">=</span><span class="st">'2024-01-01'</span>, periods<span class="op">=</span><span class="dv">60</span>, freq<span class="op">=</span><span class="st">'D'</span>)</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>    g1StockData[<span class="st">"date"</span>] <span class="op">=</span> date_labels</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>    g1StockData.set_index(<span class="st">"date"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> VAR(g1StockData.iloc[:<span class="op">-</span><span class="dv">5</span>])</span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> model.fit(maxlags<span class="op">=</span><span class="dv">1</span>, ic<span class="op">=</span><span class="st">'aic'</span>)</span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>    lag_order <span class="op">=</span> results.k_ar</span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>    forecast_input <span class="op">=</span> g1StockData.values[<span class="op">-</span>(lag_order):]</span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>    forecast <span class="op">=</span> results.forecast(y<span class="op">=</span>forecast_input, steps<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>    forecast_df <span class="op">=</span> pd.DataFrame(forecast, index<span class="op">=</span>[<span class="ss">f"Day </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">56</span>, <span class="dv">61</span>)], columns<span class="op">=</span>g1StockData.columns)</span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>    g1StockData.index <span class="op">=</span> [<span class="ss">f"Day </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">61</span>)]</span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> forecast_df.columns:</span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>        g1StockData[c] <span class="op">=</span> g1StockData[c].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.exp(x) <span class="cf">if</span> x <span class="op">!=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>        forecast_df[c] <span class="op">=</span> forecast_df[c].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.exp(x) <span class="cf">if</span> x <span class="op">!=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.8</span>))</span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(g1StockData.columns):</span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a>        plt.plot(g1StockData.iloc[:<span class="op">-</span><span class="dv">5</span>].index, g1StockData[c].iloc[:<span class="op">-</span><span class="dv">5</span>], label<span class="op">=</span>c)</span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(g1StockData.columns):</span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>        plt.plot(forecast_df.index, <span class="bu">list</span>(forecast_df.iloc[:, i]), color<span class="op">=</span>plt.gca().lines[i].get_color(), label<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>    plt.legend(loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a>    plt.xticks(rotation<span class="op">=</span><span class="dv">90</span>)</span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>    g1StockData.replace([<span class="dv">0</span>], <span class="fl">0.001</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a>    correct <span class="op">=</span> g1StockData.iloc[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> forecast_df.iloc[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a>    prev <span class="op">=</span> g1StockData.iloc[<span class="op">-</span><span class="dv">2</span>]</span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a>    error <span class="op">=</span> <span class="bu">abs</span>(correct <span class="op">-</span> pred)</span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a>    errorPct <span class="op">=</span> error <span class="op">/</span> correct <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> pd.DataFrame({<span class="st">"correct"</span>:correct, <span class="st">"pred"</span>:pred, <span class="st">"prev"</span>:prev, <span class="st">"errorPct"</span>:errorPct, <span class="st">"error"</span>:error})</span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a>    results.replace([np.inf, <span class="op">-</span>np.inf], <span class="dv">100</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(results)</span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate MAE</span></span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a>    mae <span class="op">=</span> mean_absolute_error(results[<span class="st">'correct'</span>], results[<span class="st">'pred'</span>])</span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Mean Absolute Error:'</span>, mae)</span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate MSE</span></span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a>    mse <span class="op">=</span> mean_squared_error(results[<span class="st">'correct'</span>], results[<span class="st">'pred'</span>])</span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Mean Squared Error:'</span>, mse)</span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>    errorPct <span class="op">=</span> []</span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(correct)):</span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> correct.iloc[i] <span class="op">&lt;</span> prev.iloc[i] <span class="kw">and</span> pred.iloc[i] <span class="op">&lt;</span> prev.iloc[i]:</span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a>            count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> correct.iloc[i] <span class="op">&gt;</span> prev.iloc[i] <span class="kw">and</span> pred.iloc[i] <span class="op">&gt;</span> prev.iloc[i]:</span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a>            count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a>        errorPct.append(<span class="bu">abs</span>(correct.iloc[i] <span class="op">-</span> pred.iloc[i]) <span class="op">/</span> correct.iloc[i] <span class="op">*</span> <span class="dv">100</span>)</span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Percent Directionally Correct:"</span>, count <span class="op">/</span> <span class="bu">len</span>(correct), <span class="ss">f"(</span><span class="sc">{</span>count<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(correct)<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"MAE of Percent Error:"</span>, <span class="bu">sum</span>(results[<span class="st">"errorPct"</span>]) <span class="op">/</span> <span class="bu">len</span>(results))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>INDUSTRY: Basic Materials
+PGHL
+Test Statistic:  ADF: -1.26919   KPSS: 0.11052
+P-Value:         ADF: 0.89534    KPSS: 0.1
+DurbinWatson: 1.94677
+Granger Causality Tests
+
+Insufficient number of symbols after preprocessing
+
+
+
+INDUSTRY: Blank Check
+CEP
+Test Statistic:  ADF: -4.87106   KPSS: 0.1238
+P-Value:         ADF: 0.00035    KPSS: 0.0911
+DurbinWatson: 2.60440
+Granger Causality Tests
+PCSC 0.018398930051991544
+
+PCSC
+Test Statistic:  ADF: -4.62428   KPSS: 0.1262
+P-Value:         ADF: 0.00094    KPSS: 0.08668
+DurbinWatson: 2.38954
+Granger Causality Tests
+CEP 0.7253002930981398
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-9-output-2.png" width="738" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct       pred   prev  errorPct     error
+CEP     10.07  10.042405  10.07  0.274024  0.027594
+PCSC    10.05  10.067043  10.05  0.169584  0.017043
+Mean Absolute Error: 0.02231873080203428
+Mean Squared Error: 0.0005259568404847629
+Percent Directionally Correct: 0.0 (0/2)
+MAE of Percent Error: 0.22180426492823258
+
+
+
+INDUSTRY: Consumer Goods
+RAY
+Test Statistic:  ADF: -2.28919   KPSS: 0.11491
+P-Value:         ADF: 0.43994    KPSS: 0.1
+DurbinWatson: 1.91186
+Granger Causality Tests
+SOWG 0.004003475237870572
+TWG 0.020365358445125735
+SMXT 0.013377846185227816
+
+SOWG
+Test Statistic:  ADF: -3.55781   KPSS: 0.15682
+P-Value:         ADF: 0.0336     KPSS: 0.04098
+DurbinWatson: 2.43214
+Granger Causality Tests
+RAY 0.4316359253342723
+TWG 0.04146568996712947
+SMXT 0.16901595863786065
+
+TWG
+Test Statistic:  ADF: -2.82923   KPSS: 0.13148
+P-Value:         ADF: 0.18642    KPSS: 0.07689
+DurbinWatson: 2.11375
+Granger Causality Tests
+RAY 0.06546057972842291
+SOWG 0.39078103822872623
+SMXT 0.11521212541109388
+
+SMXT
+Test Statistic:  ADF: -2.55973   KPSS: 0.1097
+P-Value:         ADF: 0.29877    KPSS: 0.1
+DurbinWatson: 1.67778
+Granger Causality Tests
+RAY 0.2682625693186744
+SOWG 0.12048535035184825
+TWG 0.08016804138302787
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-9-output-4.png" width="717" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct       pred    prev   errorPct     error
+RAY      2.50   3.431852   2.810  37.274091  0.931852
+SOWG    10.05   8.411556   9.500  16.302924  1.638444
+TWG      0.78   0.780586   0.834   0.075153  0.000586
+SMXT    13.07  13.201538  12.570   1.006417  0.131539
+Mean Absolute Error: 0.6756052670864232
+Mean Squared Error: 0.8925374329244472
+Percent Directionally Correct: 0.5 (2/4)
+MAE of Percent Error: 13.664646286079725
+
+
+
+INDUSTRY: Consumer Services
+AZI
+Test Statistic:  ADF: -2.29635   KPSS: 0.16328
+P-Value:         ADF: 0.43597    KPSS: 0.0356
+DurbinWatson: 1.12856
+Granger Causality Tests
+NIPG 0.09937659474591048
+QMMM 0.3352194983661654
+JDZG 0.03504951472137446
+SERV 0.4677169406154553
+JUNE 0.1005614834228527
+MMA 0.22687343611730698
+INTJ 0.23235007759795726
+HAO 0.4710785057521988
+
+NIPG
+Test Statistic:  ADF: -6.15742   KPSS: 0.15337
+P-Value:         ADF: 0.0    KPSS: 0.04386
+DurbinWatson: 1.84246
+Granger Causality Tests
+QMMM 0.3855373175146004
+JDZG 0.00013485828216075612
+SERV 1.041218800971101e-05
+JUNE 0.2263764759132391
+MMA 0.010184965434085516
+INTJ 0.001257680146827705
+HAO 1.8885212438398537e-05
+
+QMMM
+Test Statistic:  ADF: -2.91843   KPSS: 0.06643
+P-Value:         ADF: 0.15633    KPSS: 0.1
+DurbinWatson: 2.21855
+Granger Causality Tests
+NIPG 0.06401927026276631
+JDZG 0.41884232209928685
+SERV 2.8107159652094402e-14
+JUNE 0.06237769669556758
+MMA 0.3883500872333052
+INTJ 9.049872659965943e-07
+HAO 0.036994470965221814
+
+JDZG
+Test Statistic:  ADF: -1.64356   KPSS: 0.13159
+P-Value:         ADF: 0.77491    KPSS: 0.07669
+DurbinWatson: 1.55328
+Granger Causality Tests
+NIPG 0.00014661831118963637
+QMMM 0.14391984377263076
+SERV 2.936802600630538e-07
+JUNE 0.8129768989869852
+MMA 0.42107217681889264
+INTJ 2.3503820000387716e-05
+HAO 0.05814205386183099
+
+SERV
+Test Statistic:  ADF: -8.96804   KPSS: 0.11209
+P-Value:         ADF: 0.0    KPSS: 0.1
+DurbinWatson: 1.11358
+Granger Causality Tests
+NIPG 5.51449930148218e-10
+QMMM 0.23841911591839643
+JDZG 0.021775653997186152
+JUNE 0.3471778122384291
+MMA 0.04701771766521742
+INTJ 0.0034737010362503457
+HAO 3.6975213577718427e-09
+
+JUNE
+Test Statistic:  ADF: -1.52329   KPSS: 0.1008
+P-Value:         ADF: 0.82103    KPSS: 0.1
+DurbinWatson: 2.10745
+Granger Causality Tests
+NIPG 0.02726820614945278
+QMMM 0.32970396721682604
+JDZG 0.8518363459467659
+SERV 0.061715937499103965
+MMA 0.7555089726453941
+INTJ 0.22618325441297654
+HAO 0.10564186968119128
+
+MMA
+Test Statistic:  ADF: -1.67616   KPSS: 0.10545
+P-Value:         ADF: 0.76121    KPSS: 0.1
+DurbinWatson: 1.93570
+Granger Causality Tests
+NIPG 0.3372463595330978
+QMMM 0.4387950595498389
+JDZG 0.12770526703908516
+SERV 0.13923128240592125
+JUNE 0.026669209651803093
+INTJ 0.1839498209592607
+HAO 0.7319759479420965
+
+INTJ
+Test Statistic:  ADF: -1.66739   KPSS: 0.14197
+P-Value:         ADF: 0.76495    KPSS: 0.05746
+DurbinWatson: 1.66931
+Granger Causality Tests
+NIPG 3.1250771624089655e-07
+QMMM 0.05215907314044164
+JDZG 0.03504186290050869
+SERV 7.54876735519491e-08
+JUNE 0.3999907115142487
+MMA 0.2680120081657049
+HAO 0.0010711534500887072
+
+HAO
+Test Statistic:  ADF: -3.47495   KPSS: 0.14992
+P-Value:         ADF: 0.04215    KPSS: 0.04673
+DurbinWatson: 2.20710
+Granger Causality Tests
+NIPG 0.17841022509524077
+QMMM 0.004486634916481712
+JDZG 0.4681504690892284
+SERV 9.403330361300152e-05
+JUNE 0.16798835584094057
+MMA 0.024312381639943294
+INTJ 0.11577411864327523
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-9-output-6.png" width="717" height="436" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct      pred   prev   errorPct     error
+NIPG    7.100  6.771338  7.120   4.629040  0.328662
+QMMM    7.700  5.769832  7.710  25.067121  1.930168
+JDZG    0.557  0.217923  0.509  60.875620  0.339077
+SERV    2.800  3.316785  2.880  18.456618  0.516785
+JUNE    5.400  4.531574  5.420  16.081960  0.868426
+MMA     3.005  2.861430  2.640   4.777719  0.143570
+INTJ    1.070  1.037296  1.045   3.056430  0.032704
+HAO     4.830  5.789296  4.730  19.861210  0.959296
+Mean Absolute Error: 0.6398361411622082
+Mean Squared Error: 0.7389629538463508
+Percent Directionally Correct: 0.625 (5/8)
+MAE of Percent Error: 19.100714696472554
+
+
+
+INDUSTRY: Financials
+BOW
+Test Statistic:  ADF: -3.50887   KPSS: 0.09492
+P-Value:         ADF: 0.03845    KPSS: 0.1
+DurbinWatson: 1.99343
+Granger Causality Tests
+MFI 0.0006123916740149802
+ZBAO 0.015893852393780633
+PSBD 0.5639070614036178
+
+MFI
+Test Statistic:  ADF: -4.16844   KPSS: 0.1375
+P-Value:         ADF: 0.00499    KPSS: 0.06575
+DurbinWatson: 1.84989
+Granger Causality Tests
+BOW 0.09021573559171367
+ZBAO 0.15751345731870797
+PSBD 0.26317627662405996
+
+ZBAO
+Test Statistic:  ADF: -3.81297   KPSS: 0.09004
+P-Value:         ADF: 0.01592    KPSS: 0.1
+DurbinWatson: 2.41288
+Granger Causality Tests
+BOW 0.028073586221873136
+MFI 2.2136697607835255e-06
+PSBD 0.11417023412210545
+
+PSBD
+Test Statistic:  ADF: -3.62758   KPSS: 0.08807
+P-Value:         ADF: 0.02759    KPSS: 0.1
+DurbinWatson: 2.55556
+Granger Causality Tests
+BOW 0.2727132098706565
+MFI 0.056308956940559464
+ZBAO 0.05753742245020424
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-9-output-8.png" width="717" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        correct       pred       prev  errorPct     error
+BOW   27.840000  26.747875  26.950001  3.922862  1.092125
+MFI    0.930000   0.978036   0.920000  5.165205  0.048036
+ZBAO   4.020000   3.983386   4.000000  0.910787  0.036614
+PSBD  16.110001  16.276715  16.290001  1.034851  0.166714
+Mean Absolute Error: 0.3358723207067936
+Mean Squared Error: 0.3060445909142488
+Percent Directionally Correct: 0.5 (2/4)
+MAE of Percent Error: 2.7584262162690028
+
+
+
+INDUSTRY: Health Care
+PTHL
+Test Statistic:  ADF: -2.38988   KPSS: 0.1181
+P-Value:         ADF: 0.38501    KPSS: 0.1
+DurbinWatson: 2.40971
+Granger Causality Tests
+WOK 0.03925440460116921
+ACTU 0.04817216993701838
+OSTX 0.3168410192435049
+RAPP 0.2443316824186286
+MNDR 0.018701609386522877
+CTNM 0.34629196037876314
+BOLD 0.9332282232048003
+CHRO 0.7294154259576592
+MGX 0.450911609636071
+TELO 0.011635544583824528
+ANRO 0.20235569157464986
+GUTS 0.04649609543202402
+AVBP 0.5447363367377756
+
+WOK
+Test Statistic:  ADF: -3.1711    KPSS: 0.08327
+P-Value:         ADF: 0.09031    KPSS: 0.1
+DurbinWatson: 1.68385
+Granger Causality Tests
+PTHL 0.1773333135366465
+ACTU 0.6041157543636733
+OSTX 0.0013611297785319214
+RAPP 0.01691810761529969
+MNDR 0.3066061912939472
+CTNM 0.08456643863773342
+BOLD 0.43817378270742113
+CHRO 0.6495169763333235
+MGX 0.058817511845946746
+TELO 0.19075221994408403
+ANRO 0.029513246963264256
+GUTS 0.009501959230290482
+AVBP 0.0008590938054373965
+
+ACTU
+Test Statistic:  ADF: -1.65286   KPSS: 0.1472
+P-Value:         ADF: 0.77105    KPSS: 0.049
+DurbinWatson: 1.97261
+Granger Causality Tests
+PTHL 0.4689878812572936
+WOK 0.4475126653341218
+OSTX 0.40953042181078797
+RAPP 0.34615448437670515
+MNDR 0.27859215933155684
+CTNM 0.05517738650591184
+BOLD 0.3752884325398882
+CHRO 0.08370272817818714
+MGX 0.03478894974817563
+TELO 0.048687534839723726
+ANRO 0.20868895045907387
+GUTS 0.4398245685419421
+AVBP 0.25653190677406396
+
+OSTX
+Test Statistic:  ADF: -5.30766   KPSS: 0.12754
+P-Value:         ADF: 5e-05  KPSS: 0.08419
+DurbinWatson: 2.52329
+Granger Causality Tests
+PTHL 0.08670173489073135
+WOK 3.5558081754724864e-05
+RAPP 0.09411549026685269
+MNDR 0.08086049981185905
+CTNM 0.1335345783602022
+BOLD 0.0734004391540846
+CHRO 0.09912955527860841
+MGX 0.3025603277870605
+TELO 1.823826210364999e-05
+ANRO 0.047770652061806765
+GUTS 0.1148925435597243
+AVBP 0.15925602262328564
+
+RAPP
+Test Statistic:  ADF: -4.32761   KPSS: 0.09268
+P-Value:         ADF: 0.00285    KPSS: 0.1
+DurbinWatson: 2.49984
+Granger Causality Tests
+PTHL 0.31925388333311217
+WOK 0.05030422311630279
+OSTX 0.01315570063540572
+MNDR 0.4615246820084944
+CTNM 0.32712422924875234
+BOLD 0.3800796264120684
+CHRO 0.03086116996466852
+MGX 0.07417145017904349
+TELO 0.005447000256884548
+ANRO 0.061289219354879194
+GUTS 0.6670089867081552
+AVBP 0.1567205804916075
+
+MNDR
+Test Statistic:  ADF: -1.78656   KPSS: 0.12236
+P-Value:         ADF: 0.7112     KPSS: 0.09377
+DurbinWatson: 1.65656
+Granger Causality Tests
+PTHL 0.00155132590603432
+WOK 0.09383514065508267
+OSTX 0.021769795634795457
+RAPP 0.0853641498025109
+CTNM 0.2255899647641915
+BOLD 0.09530456801392585
+CHRO 0.12066067130130244
+MGX 0.06916444774401938
+TELO 0.0017068898758831551
+ANRO 0.7842594935548879
+GUTS 0.033690337834062334
+AVBP 0.0970837768901507
+
+CTNM
+Test Statistic:  ADF: 0.80003    KPSS: 0.15447
+P-Value:         ADF: 1.0    KPSS: 0.04294
+DurbinWatson: 2.20008
+Granger Causality Tests
+PTHL 0.5176870133266338
+WOK 0.22980467298487642
+OSTX 0.09299537185905524
+RAPP 0.30008368477227115
+MNDR 0.5435598237394004
+BOLD 0.012558127613428166
+CHRO 0.014198802496928373
+MGX 0.33044012194744693
+TELO 0.23888605914525465
+ANRO 0.2936603137581739
+GUTS 0.5360551466000933
+AVBP 0.027862877896793453
+
+BOLD
+Test Statistic:  ADF: -1.4041    KPSS: 0.11033
+P-Value:         ADF: 0.8597     KPSS: 0.1
+DurbinWatson: 1.82203
+Granger Causality Tests
+PTHL 0.1330422530241329
+WOK 0.3658104545576338
+OSTX 0.03924332768724342
+RAPP 0.053533023327477704
+MNDR 0.08252087884492341
+CHRO 0.017916047321073807
+MGX 0.16734535491985691
+TELO 0.031521400798753346
+ANRO 0.4886258573085557
+GUTS 0.617136139698123
+AVBP 0.008347740411823654
+
+CHRO
+Test Statistic:  ADF: 0.15177    KPSS: 0.12969
+P-Value:         ADF: 0.99548    KPSS: 0.0802
+DurbinWatson: 2.45193
+Granger Causality Tests
+PTHL 0.42073750778835417
+WOK 0.010438850155855389
+OSTX 0.0013282512323216662
+RAPP 0.0042173882603049745
+MNDR 0.1381612726714818
+BOLD 0.1317981819411139
+MGX 0.0003487896552253313
+TELO 0.08368546680068249
+ANRO 0.4849116410273071
+GUTS 0.06243999535864143
+AVBP 0.00724578347857157
+
+MGX
+Test Statistic:  ADF: -2.82966   KPSS: 0.16411
+P-Value:         ADF: 0.18626    KPSS: 0.0349
+DurbinWatson: 2.03101
+Granger Causality Tests
+PTHL 0.6176401626318846
+WOK 0.1542496657336586
+OSTX 0.002277659185575523
+RAPP 0.1651709562152099
+MNDR 0.7880766070287822
+BOLD 0.03285320346685174
+CHRO 0.023501321034687772
+TELO 0.09315438398963363
+ANRO 0.538488128707094
+GUTS 0.07606586130611459
+AVBP 0.049464801975924136
+
+TELO
+Test Statistic:  ADF: -3.54951   KPSS: 0.08701
+P-Value:         ADF: 0.03438    KPSS: 0.1
+DurbinWatson: 2.23094
+Granger Causality Tests
+PTHL 0.05343887553639619
+WOK 0.014987537778216091
+OSTX 0.007603183286227554
+RAPP 0.05865960445615422
+MNDR 0.45822367790612795
+BOLD 0.3696825335625456
+CHRO 0.6899192250808396
+ANRO 0.15822614411454747
+GUTS 0.03724955514988015
+AVBP 0.4068358839873789
+
+ANRO
+Test Statistic:  ADF: -3.01873   KPSS: 0.09723
+P-Value:         ADF: 0.12692    KPSS: 0.1
+DurbinWatson: 1.78261
+Granger Causality Tests
+PTHL 0.037880790019134886
+WOK 0.015887742871559255
+OSTX 0.3116435081618675
+RAPP 0.3472755559698738
+MNDR 0.032941051350173
+BOLD 0.29966270734746264
+CHRO 0.4602545341669938
+TELO 0.04073333888138334
+GUTS 0.06029185132202115
+AVBP 0.03646614043962709
+
+GUTS
+Test Statistic:  ADF: -3.45481   KPSS: 0.08782
+P-Value:         ADF: 0.04448    KPSS: 0.1
+DurbinWatson: 1.66913
+Granger Causality Tests
+PTHL 0.10735058444708273
+WOK 0.22258108490416237
+OSTX 0.000465548335009861
+RAPP 0.00027722097377959364
+MNDR 0.0007060008741738018
+BOLD 0.4186587552080332
+CHRO 0.23249355302452757
+TELO 0.046351987345753354
+ANRO 0.09487739164133752
+AVBP 0.00030409943489079894
+
+AVBP
+Test Statistic:  ADF: -3.65177   KPSS: 0.13849
+P-Value:         ADF: 0.02574    KPSS: 0.0639
+DurbinWatson: 2.48813
+Granger Causality Tests
+PTHL 0.34309220078782543
+WOK 0.07081831761241406
+OSTX 0.00010692387459798024
+RAPP 0.004680924445177441
+MNDR 0.10448533388597318
+BOLD 0.07605732902465005
+CHRO 0.33694969897942106
+TELO 0.16497680113520313
+ANRO 0.8189941911585441
+GUTS 0.28126009001128
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-9-output-10.png" width="717" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct       pred   prev   errorPct     error
+PTHL     4.54   4.983352   4.43   9.765463  0.443352
+WOK      6.06   5.809366   6.42   4.135870  0.250634
+OSTX     2.91   3.418202   2.99  17.463997  0.508202
+RAPP    20.24  22.045842  21.75   8.922146  1.805842
+MNDR     1.52   0.381896   1.52  74.875238  1.138104
+BOLD     5.41   7.147682   4.77  32.119813  1.737682
+CHRO     2.53   1.375145   1.83  45.646428  1.154855
+TELO     6.05   6.073285   6.20   0.384869  0.023285
+ANRO    15.56  14.504009  14.18   6.786574  1.055991
+GUTS     6.98   7.649999   6.70   9.598840  0.669999
+AVBP    15.90  17.089810  15.50   7.483087  1.189811
+Mean Absolute Error: 0.9070687206545085
+Mean Squared Error: 1.1279481295259508
+Percent Directionally Correct: 0.6363636363636364 (7/11)
+MAE of Percent Error: 19.743847788579256
+
+
+
+INDUSTRY: Industrials
+ADUR
+Test Statistic:  ADF: -3.91058   KPSS: 0.13632
+P-Value:         ADF: 0.01173    KPSS: 0.06792
+DurbinWatson: 1.82832
+Granger Causality Tests
+XCH 0.0012871045188522748
+JBDI 0.01766756469313325
+RECT 0.04044048711490123
+FLYE 0.7967757956631434
+ZONE 0.14039453049893008
+NCI 3.975503594059755e-06
+TRSG 2.2319155164604927e-05
+MTEN 0.3198223996313754
+MAMO 0.0038033459187325706
+LOBO 0.0008697438396122019
+PMNT 0.0008944680919377285
+JL 0.15071358369045723
+SYNX 0.004494220644642226
+
+XCH
+Test Statistic:  ADF: -2.39038   KPSS: 0.14949
+P-Value:         ADF: 0.38475    KPSS: 0.0471
+DurbinWatson: 2.05206
+Granger Causality Tests
+ADUR 0.21174627588016828
+JBDI 0.10346151791358031
+RECT 0.0036873217016951784
+FLYE 0.1822299066601946
+ZONE 0.6415677814734279
+NCI 1.743514497868868e-06
+TRSG 0.12282792398402174
+MTEN 0.09381323389491648
+MAMO 0.006676463806703068
+LOBO 0.18581509150839617
+PMNT 0.002816024423755553
+JL 0.1288624749634573
+SYNX 0.00041456896852031265
+
+JBDI
+Test Statistic:  ADF: -1.7942    KPSS: 0.13202
+P-Value:         ADF: 0.70755    KPSS: 0.07589
+DurbinWatson: 2.06227
+Granger Causality Tests
+ADUR 0.13965513513170782
+RECT 0.23278255328000091
+FLYE 0.1847918174458691
+ZONE 0.11258119519664922
+NCI 2.1222141342908822e-09
+TRSG 0.012809719569679356
+MTEN 0.0022066309217052007
+MAMO 0.10077391309521073
+LOBO 0.001518821089680699
+PMNT 0.004112226371096186
+JL 0.009726234811316316
+SYNX 0.02694265823237572
+
+RECT
+Test Statistic:  ADF: -3.46067   KPSS: 0.13405
+P-Value:         ADF: 0.04379    KPSS: 0.07213
+DurbinWatson: 2.58445
+Granger Causality Tests
+ADUR 0.19112577750659276
+JBDI 0.1875269494543334
+FLYE 0.1629156374992208
+ZONE 0.37736434862474166
+NCI 2.393015339631258e-05
+TRSG 0.04262066088560813
+MTEN 0.05454803537761681
+MAMO 0.0022184106805389647
+LOBO 0.14088515238889965
+PMNT 0.0066041387556199935
+JL 0.21592297025749002
+SYNX 0.0009971744139079023
+
+FLYE
+Test Statistic:  ADF: -1.80652   KPSS: 0.09764
+P-Value:         ADF: 0.70161    KPSS: 0.1
+DurbinWatson: 1.97976
+Granger Causality Tests
+ADUR 0.7257616827529346
+JBDI 0.6913363871479143
+RECT 0.004066226939165406
+ZONE 0.04754106244840928
+NCI 0.0002385579711124075
+TRSG 0.0010175766400564012
+MTEN 0.011134647008688204
+MAMO 0.0006416285474885876
+LOBO 0.1710980436571721
+PMNT 0.33169548669229443
+JL 0.79855918822216
+SYNX 0.3445049691603853
+
+ZONE
+Test Statistic:  ADF: -2.2201    KPSS: 0.15406
+P-Value:         ADF: 0.47854    KPSS: 0.04328
+DurbinWatson: 2.19867
+Granger Causality Tests
+ADUR 0.5799584659766712
+JBDI 0.8583174360810741
+RECT 0.3772442982282144
+FLYE 0.43858643632876726
+NCI 8.823767281268929e-05
+TRSG 0.16414705194660903
+MTEN 0.0013476306857978001
+MAMO 0.01210039416886636
+LOBO 0.013000600977813226
+PMNT 0.01973138722260462
+JL 0.4851508825725651
+SYNX 0.4330887463125449
+
+NCI
+Test Statistic:  ADF: -12.89225  KPSS: 0.16987
+P-Value:         ADF: 0.0    KPSS: 0.03011
+DurbinWatson: 1.08982
+Granger Causality Tests
+ADUR 4.4214235600004553e-11
+JBDI 0.06585681499627241
+RECT 0.032591607872591355
+FLYE 0.2178654104226113
+TRSG 0.0001833930765082264
+MTEN 0.24060731301036306
+MAMO 0.006362858984316789
+LOBO 0.003315129001766895
+PMNT 0.00024705941219408024
+JL 0.009132257232091455
+SYNX 0.0028168825550967994
+
+TRSG
+Test Statistic:  ADF: -2.12499   KPSS: 0.1134
+P-Value:         ADF: 0.53208    KPSS: 0.1
+DurbinWatson: 1.92478
+Granger Causality Tests
+ADUR 0.0051893964726990845
+JBDI 0.08181474611578463
+RECT 0.06265246391558764
+FLYE 0.0012971270614629588
+NCI 5.6486809177809894e-08
+MTEN 0.08903368859283252
+MAMO 0.01015973801309408
+LOBO 0.0353165027930587
+PMNT 0.16732553919074028
+JL 0.008018632398814236
+SYNX 0.07778457291582068
+
+MTEN
+Test Statistic:  ADF: -2.09854   KPSS: 0.16339
+P-Value:         ADF: 0.54692    KPSS: 0.03551
+DurbinWatson: 1.42146
+Granger Causality Tests
+ADUR 0.06026950570059693
+JBDI 0.24102808053217273
+RECT 0.8635082498323425
+FLYE 0.4036658875944284
+NCI 0.039429170342011856
+TRSG 0.22899341158454956
+MAMO 0.026755407547713227
+LOBO 0.4512734116698436
+PMNT 0.3273193007959945
+JL 0.34169648092119753
+SYNX 0.00016085060302326734
+
+MAMO
+Test Statistic:  ADF: -4.41059   KPSS: 0.1278
+P-Value:         ADF: 0.00211    KPSS: 0.08371
+DurbinWatson: 2.10099
+Granger Causality Tests
+ADUR 0.06827382330072419
+JBDI 0.10416017741481376
+RECT 0.32192813669207354
+FLYE 0.7703835225341813
+NCI 0.00012363694727781567
+TRSG 0.1033862908930223
+LOBO 0.12856638175485402
+PMNT 0.391205978597834
+JL 0.472525139488836
+SYNX 0.016491267557669546
+
+LOBO
+Test Statistic:  ADF: -2.64631   KPSS: 0.10082
+P-Value:         ADF: 0.25904    KPSS: 0.1
+DurbinWatson: 2.31237
+Granger Causality Tests
+ADUR 5.788382879222067e-08
+JBDI 0.042715157697601716
+RECT 0.22563052896628014
+FLYE 0.46797991355808133
+NCI 0.005793515912902346
+TRSG 0.15916982612628436
+MAMO 0.04295822308064973
+PMNT 0.13991981761209055
+JL 0.08584633137174585
+SYNX 0.33576770872019124
+
+PMNT
+Test Statistic:  ADF: -2.41248   KPSS: 0.14793
+P-Value:         ADF: 0.37301    KPSS: 0.04839
+DurbinWatson: 1.95694
+Granger Causality Tests
+ADUR 0.223439857538025
+JBDI 0.10456936776134668
+RECT 0.11380689474893765
+FLYE 0.04402080999098943
+NCI 3.176761329064781e-08
+TRSG 0.013129680807320448
+MAMO 0.010012892545112763
+LOBO 0.0019244731329550084
+JL 0.019206521945011157
+SYNX 0.03755666702720559
+
+JL
+Test Statistic:  ADF: -2.50366   KPSS: 0.08838
+P-Value:         ADF: 0.32614    KPSS: 0.1
+DurbinWatson: 1.93158
+Granger Causality Tests
+ADUR 0.4498023160479957
+JBDI 0.9298606481096826
+RECT 0.06236907394165552
+FLYE 0.0009171823402274143
+NCI 2.5526840871006577e-06
+TRSG 0.025737654340895498
+MAMO 0.002160124282169928
+LOBO 0.021593705528931466
+SYNX 0.13833610994561438
+
+SYNX
+Test Statistic:  ADF: -1.05765   KPSS: 0.11336
+P-Value:         ADF: 0.93584    KPSS: 0.1
+DurbinWatson: 2.02645
+Granger Causality Tests
+ADUR 0.17390096042882186
+JBDI 0.4122789976067273
+RECT 0.07887603892877548
+FLYE 0.10719682720182494
+NCI 0.0009873997507400096
+TRSG 0.42458214087137175
+MAMO 0.01413753976301789
+LOBO 0.1514062507897885
+JL 0.1147019681600659
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-9-output-12.png" width="717" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct      pred   prev   errorPct     error
+ADUR    4.250  4.466976  4.380   5.105312  0.216976
+JBDI    0.666  0.722472  0.666   8.479279  0.056472
+RECT    3.236  3.155866  3.248   2.476317  0.080134
+FLYE    0.703  0.617364  0.713  12.181491  0.085636
+NCI     0.628  0.647296  0.624   3.072608  0.019296
+TRSG    3.260  3.577366  3.290   9.735143  0.317366
+MAMO    3.840  3.588150  4.000   6.558591  0.251850
+LOBO    2.060  2.545742  2.260  23.579727  0.485742
+JL      0.644  0.683258  0.629   6.095955  0.039258
+SYNX    3.371  3.803677  3.340  12.835283  0.432677
+Mean Absolute Error: 0.19854065041304847
+Mean Squared Error: 0.06532406970813144
+Percent Directionally Correct: 0.6 (6/10)
+MAE of Percent Error: 9.011970549189545
+
+
+
+INDUSTRY: Oil and Gas
+Insufficient number of symbols after preprocessing
+
+
+
+INDUSTRY: Other
+PMAX
+Test Statistic:  ADF: -2.79161   KPSS: 0.09028
+P-Value:         ADF: 0.20004    KPSS: 0.1
+DurbinWatson: 2.34362
+Granger Causality Tests
+SPAI 0.17422234742797515
+RITR 0.7676192987302155
+ICON 0.0673640660418446
+EHGO 0.0194864739630305
+LSH 0.0045141511423502124
+BTOC 0.37445254867584615
+SUGP 0.10833281901614931
+
+SPAI
+Test Statistic:  ADF: -1.97701   KPSS: 0.1775
+P-Value:         ADF: 0.6139     KPSS: 0.02444
+DurbinWatson: 1.84638
+Granger Causality Tests
+PMAX 0.3952288890207526
+RITR 0.878421021514134
+ICON 0.4646138339950062
+EHGO 1.8830334425207237e-05
+LSH 0.23119295319186484
+BTOC 0.021633426715009094
+SUGP 0.06348029055746425
+
+RITR
+Test Statistic:  ADF: -1.43074   KPSS: 0.08671
+P-Value:         ADF: 0.85166    KPSS: 0.1
+DurbinWatson: 2.15439
+Granger Causality Tests
+PMAX 0.1140532304985054
+ICON 0.645894428792705
+EHGO 7.649217519472641e-05
+LSH 0.34253733312749574
+BTOC 0.2583698103214859
+SUGP 0.1322314561219613
+
+ICON
+Test Statistic:  ADF: -1.81912   KPSS: 0.11985
+P-Value:         ADF: 0.69547    KPSS: 0.09843
+DurbinWatson: 1.79562
+Granger Causality Tests
+PMAX 0.0015207806143716857
+RITR 0.6639454763952538
+EHGO 0.04617014037220832
+LSH 0.5925331956080155
+BTOC 0.02010737172341354
+SUGP 0.238280157683495
+
+EHGO
+Test Statistic:  ADF: -1.70241   KPSS: 0.1382
+P-Value:         ADF: 0.74981    KPSS: 0.06445
+DurbinWatson: 1.11808
+Granger Causality Tests
+PMAX 0.37334119327285087
+RITR 0.14228648983746497
+ICON 0.3309976064621839
+LSH 0.2895912687117516
+BTOC 0.5055911468432706
+SUGP 0.018865318198385658
+
+LSH
+Test Statistic:  ADF: -2.7394    KPSS: 0.08153
+P-Value:         ADF: 0.22009    KPSS: 0.1
+DurbinWatson: 2.00787
+Granger Causality Tests
+PMAX 0.18734333580195467
+RITR 0.6503782760526864
+ICON 0.15460313357784516
+EHGO 0.256838317240311
+BTOC 0.016929248811610932
+SUGP 0.178595592509146
+
+BTOC
+Test Statistic:  ADF: -2.81767   KPSS: 0.07355
+P-Value:         ADF: 0.19053    KPSS: 0.1
+DurbinWatson: 2.42564
+Granger Causality Tests
+PMAX 0.027354593891234808
+RITR 0.38906620255345653
+ICON 0.17218610503009985
+EHGO 0.30663378672288677
+LSH 0.418819636551909
+SUGP 0.05315899677934711
+
+SUGP
+Test Statistic:  ADF: -2.34667   KPSS: 0.13
+P-Value:         ADF: 0.40833    KPSS: 0.07963
+DurbinWatson: 1.75063
+Granger Causality Tests
+PMAX 0.17082618218921705
+RITR 0.20845624665503376
+ICON 0.4865677422624596
+EHGO 0.0031276912706451406
+LSH 0.19314067573411128
+BTOC 0.6661818558308004
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-9-output-14.png" width="708" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct      pred   prev   errorPct     error
+PMAX     3.11  3.279176  3.110   5.439745  0.169176
+RITR     4.00  5.406094  4.488  35.152354  1.406094
+ICON     2.08  2.247646  2.100   8.059929  0.167647
+EHGO     1.93  2.074829  2.180   7.504075  0.144829
+LSH      2.48  2.558756  2.560   3.175637  0.078756
+BTOC     4.66  4.837681  4.660   3.812891  0.177681
+SUGP     1.85  2.722475  2.080  47.160790  0.872475
+Mean Absolute Error: 0.4309509323460946
+Mean Squared Error: 0.40768384906866134
+Percent Directionally Correct: 0.2857142857142857 (2/7)
+MAE of Percent Error: 15.7579173155068
+
+
+
+INDUSTRY: Technology
+TZUP
+Test Statistic:  ADF: -3.2689    KPSS: 0.08704
+P-Value:         ADF: 0.07153    KPSS: 0.1
+DurbinWatson: 2.16014
+Granger Causality Tests
+TDTH 0.6823223316502175
+YXT 0.4283906856900437
+ORKT 0.4300025001581208
+BLMZ 0.6595400202818587
+SVCO 0.003589471927993357
+YYGH 0.266390090776642
+UBXG 0.7059463411532648
+RYDE 0.47963300463642833
+LGCL 0.013291035416353932
+WETH 0.011802395728465807
+UMAC 0.06821785889977063
+YIBO 0.8692106449127109
+CCTG 0.05416863526463887
+
+TDTH
+Test Statistic:  ADF: -2.89826   KPSS: 0.08683
+P-Value:         ADF: 0.16278    KPSS: 0.1
+DurbinWatson: 2.40378
+Granger Causality Tests
+TZUP 0.5141584757566373
+YXT 0.05592730841857845
+ORKT 0.06814762602347675
+BLMZ 0.7248493887232259
+SVCO 0.25273420980553113
+YYGH 0.11544355229462014
+UBXG 3.071604540305703e-05
+RYDE 0.08763296277624222
+LGCL 0.4246823941371245
+WETH 0.0019548675268903724
+UMAC 0.0358296520578945
+YIBO 0.272175368763556
+CCTG 0.029644558390916256
+
+YXT
+Test Statistic:  ADF: -1.73133   KPSS: 0.16095
+P-Value:         ADF: 0.73689    KPSS: 0.03754
+DurbinWatson: 2.26405
+Granger Causality Tests
+TZUP 0.26670643237762093
+TDTH 0.01897348646757842
+ORKT 0.3438181093750958
+BLMZ 0.013599484419789809
+SVCO 0.02311748012079205
+YYGH 0.002185990801157279
+UBXG 0.11348878430474163
+RYDE 0.13597906864514914
+LGCL 0.4892388139114481
+WETH 0.001616997212709013
+UMAC 0.0006894747129035146
+YIBO 0.01068230213734056
+CCTG 0.029768726040712155
+
+ORKT
+Test Statistic:  ADF: -1.64549   KPSS: 0.15057
+P-Value:         ADF: 0.77412    KPSS: 0.04619
+DurbinWatson: 1.82332
+Granger Causality Tests
+TZUP 0.7135926392756519
+TDTH 0.40255189749182185
+BLMZ 0.16170229335586947
+SVCO 0.02227430751475294
+YYGH 0.31492757156602863
+UBXG 0.43373200258354205
+RYDE 0.6460845849414685
+LGCL 0.09599771520105828
+WETH 0.09994918750694418
+UMAC 0.3315543028240356
+YIBO 0.2681411966686666
+CCTG 0.7267308442823277
+
+BLMZ
+Test Statistic:  ADF: -3.33969   KPSS: 0.07665
+P-Value:         ADF: 0.05998    KPSS: 0.1
+DurbinWatson: 1.61641
+Granger Causality Tests
+TZUP 0.10962182316876362
+TDTH 0.1142908995174514
+SVCO 0.18161019205992504
+YYGH 0.1276902668345709
+UBXG 0.13669157487620118
+RYDE 0.09427864590113066
+LGCL 0.1639205343352811
+WETH 0.01847336993230113
+UMAC 0.06114680355978302
+YIBO 0.5460642761983123
+CCTG 0.06149861007267143
+
+SVCO
+Test Statistic:  ADF: -2.11824   KPSS: 0.09272
+P-Value:         ADF: 0.53587    KPSS: 0.1
+DurbinWatson: 2.23338
+Granger Causality Tests
+TZUP 0.053567579386533525
+TDTH 0.29897720356934876
+BLMZ 0.32723750721378475
+YYGH 0.5763126792314296
+UBXG 0.08196897325679493
+RYDE 0.26633677131017375
+LGCL 0.000756276664819582
+WETH 0.5313320130880743
+UMAC 0.5879255803099234
+YIBO 0.3764650964378958
+CCTG 0.48290541566799117
+
+YYGH
+Test Statistic:  ADF: -2.55588   KPSS: 0.16155
+P-Value:         ADF: 0.30061    KPSS: 0.03704
+DurbinWatson: 2.11464
+Granger Causality Tests
+TZUP 0.26957063161813394
+TDTH 0.02195401679347399
+BLMZ 0.5648968135648731
+SVCO 0.3679321423244381
+UBXG 0.15833638339798228
+RYDE 0.09636764695978578
+LGCL 0.20708619713242268
+WETH 0.01795360263566169
+UMAC 0.00036468078483574553
+YIBO 0.45951779975735063
+CCTG 0.015234225520339196
+
+UBXG
+Test Statistic:  ADF: -1.43196   KPSS: 0.15918
+P-Value:         ADF: 0.85129    KPSS: 0.03902
+DurbinWatson: 2.42972
+Granger Causality Tests
+TZUP 0.24710765657628106
+TDTH 0.017033707900028693
+BLMZ 0.37432930145102095
+SVCO 0.0627882591676726
+RYDE 0.001151737995516758
+LGCL 0.30117608020668984
+WETH 0.21906622992582095
+UMAC 0.09949492118628919
+YIBO 0.16339852899385604
+CCTG 0.6619235170463266
+
+RYDE
+Test Statistic:  ADF: -1.19086   KPSS: 0.15342
+P-Value:         ADF: 0.91236    KPSS: 0.04382
+DurbinWatson: 1.88988
+Granger Causality Tests
+TZUP 0.03826109989316823
+TDTH 0.5471744275433934
+BLMZ 0.5970175326231866
+SVCO 0.11673160218623409
+LGCL 0.07574996645409768
+WETH 0.20697831469101954
+UMAC 0.17332014704194657
+YIBO 0.045146614079421186
+CCTG 0.6712108049047701
+
+LGCL
+Test Statistic:  ADF: -1.72563   KPSS: 0.13371
+P-Value:         ADF: 0.73947    KPSS: 0.07276
+DurbinWatson: 2.28803
+Granger Causality Tests
+TZUP 0.041556705247758036
+TDTH 0.7865878563804026
+BLMZ 0.03407224473538452
+SVCO 0.27226570817089957
+WETH 0.022025543771509188
+UMAC 0.4070953858014834
+YIBO 0.06934265338597301
+CCTG 0.0004634810347936425
+
+WETH
+Test Statistic:  ADF: -2.61013   KPSS: 0.06548
+P-Value:         ADF: 0.27525    KPSS: 0.1
+DurbinWatson: 1.44965
+Granger Causality Tests
+TZUP 0.5639658060837393
+TDTH 0.01525787181146715
+BLMZ 0.6813384453710358
+SVCO 0.21527429178234184
+LGCL 0.04754280024881835
+UMAC 0.05034286089256414
+YIBO 0.5207575027887206
+CCTG 0.38721395906182765
+
+UMAC
+Test Statistic:  ADF: -4.41246   KPSS: 0.07206
+P-Value:         ADF: 0.00209    KPSS: 0.1
+DurbinWatson: 2.22001
+Granger Causality Tests
+TZUP 0.26181372877387704
+TDTH 0.004990383203960125
+BLMZ 0.5302519323326168
+SVCO 0.20615916765761155
+LGCL 0.06033410991725378
+WETH 1.0189892372711763e-05
+YIBO 0.441416471451081
+CCTG 0.045722990623835426
+
+YIBO
+Test Statistic:  ADF: -1.86895   KPSS: 0.13353
+P-Value:         ADF: 0.6706     KPSS: 0.07309
+DurbinWatson: 2.15418
+Granger Causality Tests
+TZUP 0.1435280090912015
+TDTH 0.0037336065727818103
+BLMZ 0.2939582444780208
+SVCO 0.15731304715710612
+LGCL 0.5889605057677483
+WETH 0.2662261106623099
+UMAC 0.3584577110442848
+CCTG 0.2698348548993421
+
+CCTG
+Test Statistic:  ADF: -5.47567   KPSS: 0.1423
+P-Value:         ADF: 3e-05  KPSS: 0.05685
+DurbinWatson: 2.48644
+Granger Causality Tests
+TZUP 0.028097252120823177
+TDTH 0.02074919351500294
+BLMZ 0.45233619707464257
+SVCO 0.5180869789377847
+LGCL 0.5857626432000529
+WETH 0.13856687241739798
+UMAC 0.1411356239130154
+YIBO 0.05632817115882605
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-9-output-16.png" width="717" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct       pred    prev   errorPct     error
+TZUP     4.25   4.371526   4.260   2.859445  0.121526
+TDTH     2.31   2.392841   2.670   3.586190  0.082841
+BLMZ     1.06   1.341366   1.280  26.543990  0.281366
+SVCO    16.18  17.367015  15.880   7.336309  1.187015
+LGCL     2.76   2.074004   2.850  24.854920  0.685996
+WETH     1.43   1.535704   1.300   7.391874  0.105704
+UMAC     1.11   1.448468   1.080  30.492603  0.338468
+YIBO     2.08   2.572521   2.143  23.678878  0.492521
+CCTG     2.88   2.158310   3.040  25.058698  0.721691
+Mean Absolute Error: 0.4463474541734747
+Mean Squared Error: 0.3188377956759481
+Percent Directionally Correct: 0.6666666666666666 (6/9)
+MAE of Percent Error: 16.866989552328267
+
+
+
+INDUSTRY: Utilities
+NNE
+Test Statistic:  ADF: 0.11135    KPSS: 0.1338
+P-Value:         ADF: 0.9952     KPSS: 0.07258
+DurbinWatson: 1.74072
+Granger Causality Tests
+CDTG 0.14328969971467354
+
+CDTG
+Test Statistic:  ADF: -2.16877   KPSS: 0.10244
+P-Value:         ADF: 0.50744    KPSS: 0.1
+DurbinWatson: 2.32120
+Granger Causality Tests
+NNE 0.5096592440595482
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-9-output-18.png" width="717" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct       pred  prev  errorPct     error
+NNE      9.62  10.447222  9.86  8.598979  0.827222
+CDTG     3.34   3.643545  3.42  9.088174  0.303545
+Mean Absolute Error: 0.5653834042708452
+Mean Squared Error: 0.3882177421990614
+Percent Directionally Correct: 0.0 (0/2)
+MAE of Percent Error: 8.843576673080616</code></pre>
+</div>
+</div>
+</details>
+<p>Finally, the clusters were analyzed by month of IPO.</p>
+<details>
+<summary>
+Show results of Monly Group Tests
+</summary>
+<div id="20a62960" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tools.sm_exceptions <span class="im">import</span> ValueWarning</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> prediction.prediction_util <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.api <span class="im">import</span> VAR</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_absolute_error, mean_squared_error</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>, category<span class="op">=</span>ValueWarning)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>stocks <span class="op">=</span> pd.read_csv(<span class="st">"data-collection/stocks.csv"</span>, header<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">1</span>], index_col<span class="op">=</span>[<span class="dv">0</span>])</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>ipos <span class="op">=</span> pd.read_csv(<span class="st">"analysis/clustered.csv"</span>)</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>monthLabels <span class="op">=</span> [</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"January"</span>,</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"February"</span>,</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"March"</span>,</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"April"</span>,</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"May"</span>,</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"June"</span>,</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"July"</span>,</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"August"</span>,</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"September"</span>,</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"October"</span>,</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"November"</span>,</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"December"</span>,</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> INUM, ILABEL <span class="kw">in</span> <span class="bu">enumerate</span>(monthLabels):</span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> INUM <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>)</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"IPO MONTH:"</span>, ILABEL)</span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>    group1 <span class="op">=</span> ipos[ipos[<span class="st">"Month_Cluster"</span>] <span class="op">==</span> INUM]</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>    close <span class="op">=</span> stocks.xs(<span class="st">'Close'</span>, axis<span class="op">=</span><span class="dv">1</span>, level<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>    close.index <span class="op">=</span> stocks.index</span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>    g1StockData <span class="op">=</span> getGroupClosingPrices(group1, close)</span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> g1StockData.columns:</span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>        g1StockData[c] <span class="op">=</span> g1StockData[c].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x) <span class="cf">if</span> x <span class="op">!=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a>        ts, p, lags <span class="op">=</span> adf_test(g1StockData[c].dropna())</span>
+<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a>        tsK, pK, lagsK <span class="op">=</span> kpss_test(g1StockData[c].dropna())</span>
+<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a>        db <span class="op">=</span> durbinWatson_test(g1StockData[c].dropna())</span>
+<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(c)</span>
+<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Test Statistic:  ADF: </span><span class="sc">{</span><span class="bu">round</span>(ts, <span class="dv">5</span>)<span class="sc">}</span><span class="ch">\t</span><span class="ss"> KPSS: </span><span class="sc">{</span><span class="bu">round</span>(tsK, <span class="dv">5</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"P-Value:         ADF: </span><span class="sc">{</span><span class="bu">round</span>(p, <span class="dv">5</span>)<span class="sc">}</span><span class="ch">\t</span><span class="ss"> KPSS: </span><span class="sc">{</span><span class="bu">round</span>(pK, <span class="dv">5</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb22-52"><a href="#cb22-52" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"DurbinWatson: </span><span class="sc">%.5f</span><span class="st">"</span> <span class="op">%</span> db)</span>
+<span id="cb22-53"><a href="#cb22-53" aria-hidden="true" tabindex="-1"></a>        others <span class="op">=</span> [x <span class="cf">for</span> x <span class="kw">in</span> g1StockData.columns <span class="cf">if</span> x <span class="op">!=</span> c]</span>
+<span id="cb22-54"><a href="#cb22-54" aria-hidden="true" tabindex="-1"></a>        gc <span class="op">=</span> {}</span>
+<span id="cb22-55"><a href="#cb22-55" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Granger Causality Tests"</span>)</span>
+<span id="cb22-56"><a href="#cb22-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> x <span class="kw">in</span> others:</span>
+<span id="cb22-57"><a href="#cb22-57" aria-hidden="true" tabindex="-1"></a>            gc[x] <span class="op">=</span> <span class="bu">min</span>(granger_test(g1StockData[c], g1StockData[x]).values())</span>
+<span id="cb22-58"><a href="#cb22-58" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(x, gc[x])</span>
+<span id="cb22-59"><a href="#cb22-59" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> p <span class="op">&gt;</span> <span class="fl">0.05</span> <span class="kw">and</span> pK <span class="op">&lt;</span> <span class="fl">0.05</span>:</span>
+<span id="cb22-60"><a href="#cb22-60" aria-hidden="true" tabindex="-1"></a>            g1StockData.drop(columns<span class="op">=</span>c, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb22-61"><a href="#cb22-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-62"><a href="#cb22-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(g1StockData.columns) <span class="op">&lt;</span> <span class="dv">2</span>:</span>
+<span id="cb22-63"><a href="#cb22-63" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Insufficient number of symbols after preprocessing"</span>)</span>
+<span id="cb22-64"><a href="#cb22-64" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb22-65"><a href="#cb22-65" aria-hidden="true" tabindex="-1"></a>    g1StockData <span class="op">=</span> g1StockData.iloc[:, <span class="dv">0</span>:<span class="dv">15</span>]</span>
+<span id="cb22-66"><a href="#cb22-66" aria-hidden="true" tabindex="-1"></a>    date_labels <span class="op">=</span> pd.date_range(start<span class="op">=</span><span class="st">'2024-01-01'</span>, periods<span class="op">=</span><span class="dv">60</span>, freq<span class="op">=</span><span class="st">'D'</span>)</span>
+<span id="cb22-67"><a href="#cb22-67" aria-hidden="true" tabindex="-1"></a>    g1StockData[<span class="st">"date"</span>] <span class="op">=</span> date_labels</span>
+<span id="cb22-68"><a href="#cb22-68" aria-hidden="true" tabindex="-1"></a>    g1StockData.set_index(<span class="st">"date"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb22-69"><a href="#cb22-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-70"><a href="#cb22-70" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> VAR(g1StockData.iloc[:<span class="op">-</span><span class="dv">5</span>])</span>
+<span id="cb22-71"><a href="#cb22-71" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> model.fit(maxlags<span class="op">=</span><span class="dv">1</span>, ic<span class="op">=</span><span class="st">'aic'</span>)</span>
+<span id="cb22-72"><a href="#cb22-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-73"><a href="#cb22-73" aria-hidden="true" tabindex="-1"></a>    lag_order <span class="op">=</span> results.k_ar</span>
+<span id="cb22-74"><a href="#cb22-74" aria-hidden="true" tabindex="-1"></a>    forecast_input <span class="op">=</span> g1StockData.values[<span class="op">-</span>(lag_order):]</span>
+<span id="cb22-75"><a href="#cb22-75" aria-hidden="true" tabindex="-1"></a>    forecast <span class="op">=</span> results.forecast(y<span class="op">=</span>forecast_input, steps<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb22-76"><a href="#cb22-76" aria-hidden="true" tabindex="-1"></a>    forecast_df <span class="op">=</span> pd.DataFrame(forecast, index<span class="op">=</span>[<span class="ss">f"Day </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">56</span>, <span class="dv">61</span>)], columns<span class="op">=</span>g1StockData.columns)</span>
+<span id="cb22-77"><a href="#cb22-77" aria-hidden="true" tabindex="-1"></a>    g1StockData.index <span class="op">=</span> [<span class="ss">f"Day </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">61</span>)]</span>
+<span id="cb22-78"><a href="#cb22-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-79"><a href="#cb22-79" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> forecast_df.columns:</span>
+<span id="cb22-80"><a href="#cb22-80" aria-hidden="true" tabindex="-1"></a>        g1StockData[c] <span class="op">=</span> g1StockData[c].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.exp(x) <span class="cf">if</span> x <span class="op">!=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb22-81"><a href="#cb22-81" aria-hidden="true" tabindex="-1"></a>        forecast_df[c] <span class="op">=</span> forecast_df[c].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.exp(x) <span class="cf">if</span> x <span class="op">!=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb22-82"><a href="#cb22-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-83"><a href="#cb22-83" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.8</span>))</span>
+<span id="cb22-84"><a href="#cb22-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(g1StockData.columns):</span>
+<span id="cb22-85"><a href="#cb22-85" aria-hidden="true" tabindex="-1"></a>        plt.plot(g1StockData.iloc[:<span class="op">-</span><span class="dv">5</span>].index, g1StockData[c].iloc[:<span class="op">-</span><span class="dv">5</span>], label<span class="op">=</span>c)</span>
+<span id="cb22-86"><a href="#cb22-86" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(g1StockData.columns):</span>
+<span id="cb22-87"><a href="#cb22-87" aria-hidden="true" tabindex="-1"></a>        plt.plot(forecast_df.index, <span class="bu">list</span>(forecast_df.iloc[:, i]), color<span class="op">=</span>plt.gca().lines[i].get_color(), label<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb22-88"><a href="#cb22-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-89"><a href="#cb22-89" aria-hidden="true" tabindex="-1"></a>    plt.legend(loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
+<span id="cb22-90"><a href="#cb22-90" aria-hidden="true" tabindex="-1"></a>    plt.xticks(rotation<span class="op">=</span><span class="dv">90</span>)</span>
+<span id="cb22-91"><a href="#cb22-91" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb22-92"><a href="#cb22-92" aria-hidden="true" tabindex="-1"></a>    g1StockData.replace([<span class="dv">0</span>], <span class="fl">0.001</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb22-93"><a href="#cb22-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-94"><a href="#cb22-94" aria-hidden="true" tabindex="-1"></a>    correct <span class="op">=</span> g1StockData.iloc[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb22-95"><a href="#cb22-95" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> forecast_df.iloc[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb22-96"><a href="#cb22-96" aria-hidden="true" tabindex="-1"></a>    prev <span class="op">=</span> g1StockData.iloc[<span class="op">-</span><span class="dv">2</span>]</span>
+<span id="cb22-97"><a href="#cb22-97" aria-hidden="true" tabindex="-1"></a>    error <span class="op">=</span> <span class="bu">abs</span>(correct <span class="op">-</span> pred)</span>
+<span id="cb22-98"><a href="#cb22-98" aria-hidden="true" tabindex="-1"></a>    errorPct <span class="op">=</span> error <span class="op">/</span> correct <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb22-99"><a href="#cb22-99" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> pd.DataFrame({<span class="st">"correct"</span>:correct, <span class="st">"pred"</span>:pred, <span class="st">"prev"</span>:prev, <span class="st">"errorPct"</span>:errorPct, <span class="st">"error"</span>:error})</span>
+<span id="cb22-100"><a href="#cb22-100" aria-hidden="true" tabindex="-1"></a>    results.replace([np.inf, <span class="op">-</span>np.inf], <span class="dv">100</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb22-101"><a href="#cb22-101" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(results)</span>
+<span id="cb22-102"><a href="#cb22-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-103"><a href="#cb22-103" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate MAE</span></span>
+<span id="cb22-104"><a href="#cb22-104" aria-hidden="true" tabindex="-1"></a>    mae <span class="op">=</span> mean_absolute_error(results[<span class="st">'correct'</span>], results[<span class="st">'pred'</span>])</span>
+<span id="cb22-105"><a href="#cb22-105" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Mean Absolute Error:'</span>, mae)</span>
+<span id="cb22-106"><a href="#cb22-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-107"><a href="#cb22-107" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate MSE</span></span>
+<span id="cb22-108"><a href="#cb22-108" aria-hidden="true" tabindex="-1"></a>    mse <span class="op">=</span> mean_squared_error(results[<span class="st">'correct'</span>], results[<span class="st">'pred'</span>])</span>
+<span id="cb22-109"><a href="#cb22-109" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Mean Squared Error:'</span>, mse)</span>
+<span id="cb22-110"><a href="#cb22-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-111"><a href="#cb22-111" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb22-112"><a href="#cb22-112" aria-hidden="true" tabindex="-1"></a>    errorPct <span class="op">=</span> []</span>
+<span id="cb22-113"><a href="#cb22-113" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(correct)):</span>
+<span id="cb22-114"><a href="#cb22-114" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> correct.iloc[i] <span class="op">&lt;</span> prev.iloc[i] <span class="kw">and</span> pred.iloc[i] <span class="op">&lt;</span> prev.iloc[i]:</span>
+<span id="cb22-115"><a href="#cb22-115" aria-hidden="true" tabindex="-1"></a>            count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb22-116"><a href="#cb22-116" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> correct.iloc[i] <span class="op">&gt;</span> prev.iloc[i] <span class="kw">and</span> pred.iloc[i] <span class="op">&gt;</span> prev.iloc[i]:</span>
+<span id="cb22-117"><a href="#cb22-117" aria-hidden="true" tabindex="-1"></a>            count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb22-118"><a href="#cb22-118" aria-hidden="true" tabindex="-1"></a>        errorPct.append(<span class="bu">abs</span>(correct.iloc[i] <span class="op">-</span> pred.iloc[i]) <span class="op">/</span> correct.iloc[i] <span class="op">*</span> <span class="dv">100</span>)</span>
+<span id="cb22-119"><a href="#cb22-119" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Percent Directionally Correct:"</span>, count <span class="op">/</span> <span class="bu">len</span>(correct), <span class="ss">f"(</span><span class="sc">{</span>count<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(correct)<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb22-120"><a href="#cb22-120" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"MAE of Percent Error:"</span>, <span class="bu">sum</span>(results[<span class="st">"errorPct"</span>]) <span class="op">/</span> <span class="bu">len</span>(results))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>IPO MONTH: January
+Insufficient number of symbols after preprocessing
+
+
+
+IPO MONTH: February
+AVBP
+Test Statistic:  ADF: -3.65177   KPSS: 0.13849
+P-Value:         ADF: 0.02574    KPSS: 0.0639
+DurbinWatson: 2.48813
+Granger Causality Tests
+HAO 0.019727494283736137
+YIBO 0.05587564556782938
+JL 0.06194094671907603
+SUGP 0.07942938693342351
+CCTG 0.4410488463890758
+PSBD 0.5325622151333134
+SYNX 0.21763315017496146
+HAO
+Test Statistic:  ADF: -3.47495   KPSS: 0.14992
+P-Value:         ADF: 0.04215    KPSS: 0.04673
+DurbinWatson: 2.20710
+Granger Causality Tests
+AVBP 0.5235478048448371
+YIBO 0.05138933318730364
+JL 0.7846027019560595
+SUGP 0.0012213812795337884
+CCTG 0.35743355615765543
+PSBD 0.3081013874060642
+SYNX 0.10113173046751804
+YIBO
+Test Statistic:  ADF: -1.86895   KPSS: 0.13353
+P-Value:         ADF: 0.6706     KPSS: 0.07309
+DurbinWatson: 2.15418
+Granger Causality Tests
+AVBP 0.7623977854902217
+HAO 0.42974627084960537
+JL 0.1847571370530911
+SUGP 0.7725268185712936
+CCTG 0.2698348548993421
+PSBD 0.2597888843752002
+SYNX 0.07544998376903778
+JL
+Test Statistic:  ADF: -2.50366   KPSS: 0.08838
+P-Value:         ADF: 0.32614    KPSS: 0.1
+DurbinWatson: 1.93158
+Granger Causality Tests
+AVBP 0.0010915057678337792
+HAO 0.004133641903372109
+YIBO 0.18888757149226967
+SUGP 0.01133337768503194
+CCTG 0.5463962407829133
+PSBD 0.2793759665411042
+SYNX 0.13833610994561438
+SUGP
+Test Statistic:  ADF: -2.34667   KPSS: 0.13
+P-Value:         ADF: 0.40833    KPSS: 0.07963
+DurbinWatson: 1.75063
+Granger Causality Tests
+AVBP 0.053783878052823746
+HAO 0.12285016225384376
+YIBO 0.27546487621528065
+JL 0.61385194162911
+CCTG 0.03491567693839442
+PSBD 0.1513447385905756
+SYNX 0.15225181184248893
+CCTG
+Test Statistic:  ADF: -5.47567   KPSS: 0.1423
+P-Value:         ADF: 3e-05  KPSS: 0.05685
+DurbinWatson: 2.48644
+Granger Causality Tests
+AVBP 0.1296558793426651
+HAO 0.2482535545412349
+YIBO 0.05632817115882605
+JL 0.035486408228427815
+SUGP 0.0002520461157934741
+PSBD 0.3450893789725356
+SYNX 0.05981853370992378
+PSBD
+Test Statistic:  ADF: -3.62758   KPSS: 0.08807
+P-Value:         ADF: 0.02759    KPSS: 0.1
+DurbinWatson: 2.55556
+Granger Causality Tests
+AVBP 0.16875412103652332
+HAO 0.0828189407472573
+YIBO 0.28716767206586896
+JL 0.006890210893732286
+SUGP 0.294139573764522
+CCTG 0.640615004740719
+SYNX 0.3874801989056276
+SYNX
+Test Statistic:  ADF: -1.05765   KPSS: 0.11336
+P-Value:         ADF: 0.93584    KPSS: 0.1
+DurbinWatson: 2.02645
+Granger Causality Tests
+AVBP 0.5509960256667206
+HAO 0.1514388925203692
+YIBO 0.1777026981184046
+JL 0.1147019681600659
+SUGP 0.4683384080983489
+CCTG 0.043694418633692514
+PSBD 0.11968058394133682</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-10-output-2.png" width="717" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        correct       pred       prev   errorPct     error
+AVBP  15.900000  16.555165  15.500000   4.120540  0.655166
+HAO    4.830000   4.822793   4.730000   0.149212  0.007207
+YIBO   2.080000   2.599851   2.143000  24.992845  0.519851
+JL     0.644000   0.495612   0.629000  23.041663  0.148388
+SUGP   1.850000   2.278518   2.080000  23.163141  0.428518
+CCTG   2.880000   1.905396   3.040000  33.840416  0.974604
+PSBD  16.110001  16.208522  16.290001   0.611553  0.098521
+SYNX   3.371000   3.794236   3.340000  12.555215  0.423236
+Mean Absolute Error: 0.4069364754376639
+Mean Squared Error: 0.2554843350115017
+Percent Directionally Correct: 0.625 (5/8)
+MAE of Percent Error: 15.30932301598379
+
+
+
+IPO MONTH: March
+SMXT
+Test Statistic:  ADF: -2.55973   KPSS: 0.1097
+P-Value:         ADF: 0.29877    KPSS: 0.1
+DurbinWatson: 1.67778
+Granger Causality Tests
+WETH 0.06728582604108847
+CHRO 0.16960466553570677
+UMAC 0.22968400397044345
+MGX 0.37804322137984536
+TELO 0.0004352564459335398
+PMNT 0.2355445495827791
+ANRO 0.07827919924774412
+GUTS 0.06193871098977903
+WETH
+Test Statistic:  ADF: -2.61013   KPSS: 0.06548
+P-Value:         ADF: 0.27525    KPSS: 0.1
+DurbinWatson: 1.44965
+Granger Causality Tests
+SMXT 0.04134996603381041
+CHRO 0.18971648961395193
+UMAC 0.05034286089256414
+MGX 0.22655647734247475
+TELO 0.04392916339474635
+PMNT 0.02709538087392191
+ANRO 0.17931236215474694
+GUTS 9.80676679350089e-05
+CHRO
+Test Statistic:  ADF: 0.15177    KPSS: 0.12969
+P-Value:         ADF: 0.99548    KPSS: 0.0802
+DurbinWatson: 2.45193
+Granger Causality Tests
+SMXT 0.07756050273339596
+WETH 0.008215518905121403
+UMAC 0.0037589247886810257
+MGX 0.0003487896552253313
+TELO 0.08368546680068249
+PMNT 0.0683820968891081
+ANRO 0.4849116410273071
+GUTS 0.06243999535864143
+UMAC
+Test Statistic:  ADF: -4.41246   KPSS: 0.07206
+P-Value:         ADF: 0.00209    KPSS: 0.1
+DurbinWatson: 2.22001
+Granger Causality Tests
+SMXT 0.03800552824486151
+WETH 1.0189892372711763e-05
+CHRO 0.5219548778939791
+MGX 0.04094794176721456
+TELO 0.013963339083589132
+PMNT 0.22698854714721678
+ANRO 0.6581454988364301
+GUTS 0.017291206967415405
+MGX
+Test Statistic:  ADF: -2.82966   KPSS: 0.16411
+P-Value:         ADF: 0.18626    KPSS: 0.0349
+DurbinWatson: 2.03101
+Granger Causality Tests
+SMXT 0.12466231169735872
+WETH 0.1483944172572377
+CHRO 0.023501321034687772
+UMAC 0.036133642198502645
+TELO 0.09315438398963363
+PMNT 0.19197515924666822
+ANRO 0.538488128707094
+GUTS 0.07606586130611459
+TELO
+Test Statistic:  ADF: -3.54951   KPSS: 0.08701
+P-Value:         ADF: 0.03438    KPSS: 0.1
+DurbinWatson: 2.23094
+Granger Causality Tests
+SMXT 0.14051361673239682
+WETH 0.087782810109918
+CHRO 0.6899192250808396
+UMAC 0.01989621107075295
+PMNT 0.2406790882939617
+ANRO 0.15822614411454747
+GUTS 0.03724955514988015
+PMNT
+Test Statistic:  ADF: -2.41248   KPSS: 0.14793
+P-Value:         ADF: 0.37301    KPSS: 0.04839
+DurbinWatson: 1.95694
+Granger Causality Tests
+SMXT 0.07175566325014288
+WETH 0.010930595074474376
+CHRO 0.27552115391042664
+UMAC 0.0004344149607128616
+TELO 0.043791213505332445
+ANRO 0.1378113658831962
+GUTS 0.1382000593236719
+ANRO
+Test Statistic:  ADF: -3.01873   KPSS: 0.09723
+P-Value:         ADF: 0.12692    KPSS: 0.1
+DurbinWatson: 1.78261
+Granger Causality Tests
+SMXT 0.0001523473862362105
+WETH 0.02651046276216647
+CHRO 0.4602545341669938
+UMAC 0.4278732173759212
+TELO 0.04073333888138334
+GUTS 0.06029185132202115
+GUTS
+Test Statistic:  ADF: -3.45481   KPSS: 0.08782
+P-Value:         ADF: 0.04448    KPSS: 0.1
+DurbinWatson: 1.66913
+Granger Causality Tests
+SMXT 0.001467098629330455
+WETH 0.012433795619752087
+CHRO 0.23249355302452757
+UMAC 0.09933686747793274
+TELO 0.046351987345753354
+ANRO 0.09487739164133752</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-10-output-4.png" width="717" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct       pred   prev   errorPct     error
+SMXT    13.07  10.247798  12.57  21.592975  2.822202
+WETH     1.43   1.531490   1.30   7.097202  0.101490
+CHRO     2.53   1.819908   1.83  28.066882  0.710092
+UMAC     1.11   1.581108   1.08  42.442132  0.471108
+TELO     6.05   6.422048   6.20   6.149542  0.372047
+ANRO    15.56  15.122290  14.18   2.813047  0.437710
+GUTS     6.98   6.433260   6.70   7.832950  0.546740
+Mean Absolute Error: 0.7801984043301456
+Mean Squared Error: 1.3328899946801205
+Percent Directionally Correct: 0.42857142857142855 (3/7)
+MAE of Percent Error: 16.57067576820487
+
+
+
+IPO MONTH: April
+MMA
+Test Statistic:  ADF: -1.67616   KPSS: 0.10545
+P-Value:         ADF: 0.76121    KPSS: 0.1
+DurbinWatson: 1.93570
+Granger Causality Tests
+BOLD 0.11149195827506542
+UBXG 0.09647124866329082
+LOBO 0.028038663991405675
+INTJ 0.1839498209592607
+RYDE 0.21759477951015585
+LGCL 0.008020963301736458
+BOLD
+Test Statistic:  ADF: -1.4041    KPSS: 0.11033
+P-Value:         ADF: 0.8597     KPSS: 0.1
+DurbinWatson: 1.82203
+Granger Causality Tests
+MMA 0.38333221718096655
+UBXG 0.35455229372654734
+LOBO 0.0006830095084626944
+INTJ 0.08024686324402172
+RYDE 0.4531857574044945
+LGCL 0.3248548322190036
+UBXG
+Test Statistic:  ADF: -1.43196   KPSS: 0.15918
+P-Value:         ADF: 0.85129    KPSS: 0.03902
+DurbinWatson: 2.42972
+Granger Causality Tests
+MMA 0.31938438945492104
+BOLD 0.003767860301785359
+LOBO 0.012719362596671278
+INTJ 0.2544639423228557
+RYDE 0.001151737995516758
+LGCL 0.30117608020668984
+LOBO
+Test Statistic:  ADF: -2.64631   KPSS: 0.10082
+P-Value:         ADF: 0.25904    KPSS: 0.1
+DurbinWatson: 2.31237
+Granger Causality Tests
+MMA 0.6024266815939963
+BOLD 0.2698672550972812
+INTJ 0.02131562736560416
+RYDE 0.05080746874475459
+LGCL 0.149691727013534
+INTJ
+Test Statistic:  ADF: -1.66739   KPSS: 0.14197
+P-Value:         ADF: 0.76495    KPSS: 0.05746
+DurbinWatson: 1.66931
+Granger Causality Tests
+MMA 0.2680120081657049
+BOLD 0.5704159517791556
+LOBO 0.025186178466695155
+RYDE 0.01585355157457875
+LGCL 0.003790903667725251
+RYDE
+Test Statistic:  ADF: -1.19086   KPSS: 0.15342
+P-Value:         ADF: 0.91236    KPSS: 0.04382
+DurbinWatson: 1.88988
+Granger Causality Tests
+MMA 0.007401898567587036
+BOLD 0.122292361248896
+LOBO 0.2746821555154794
+INTJ 0.07998810349091576
+LGCL 0.07574996645409768
+LGCL
+Test Statistic:  ADF: -1.72563   KPSS: 0.13371
+P-Value:         ADF: 0.73947    KPSS: 0.07276
+DurbinWatson: 2.28803
+Granger Causality Tests
+MMA 0.004138428870552761
+BOLD 0.3328946880581754
+LOBO 0.4185091034508526
+INTJ 0.3457482539983596</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-10-output-6.png" width="717" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct      pred   prev   errorPct     error
+MMA     3.005  3.314358  2.640  10.294772  0.309358
+BOLD    5.410  6.266962  4.770  15.840343  0.856963
+LOBO    2.060  1.884715  2.260   8.508963  0.175285
+INTJ    1.070  0.804070  1.045  24.853235  0.265930
+LGCL    2.760  3.336381  2.850  20.883365  0.576381
+Mean Absolute Error: 0.43678310527941483
+Mean Squared Error: 0.2527490431442076
+Percent Directionally Correct: 0.6 (3/5)
+MAE of Percent Error: 16.076135292832117
+
+
+
+IPO MONTH: May
+ZONE
+Test Statistic:  ADF: -2.2201    KPSS: 0.15406
+P-Value:         ADF: 0.47854    KPSS: 0.04328
+DurbinWatson: 2.19867
+Granger Causality Tests
+NCI 8.823767281268929e-05
+MFI 2.7225910131199447e-07
+YYGH 0.012802582831365907
+TRSG 0.16414705194660903
+CDTG 0.5166388170065104
+MTEN 0.0013476306857978001
+SERV 2.151613841314357e-05
+JUNE 0.1125687916911173
+TWG 0.0025990759552432818
+MNDR 0.5341846658836205
+CTNM 0.00017518220969929186
+MAMO 0.01210039416886636
+ZBAO 0.04002902216174135
+NCI
+Test Statistic:  ADF: -12.89225  KPSS: 0.16987
+P-Value:         ADF: 0.0    KPSS: 0.03011
+DurbinWatson: 1.08982
+Granger Causality Tests
+MFI 5.439494598238122e-17
+YYGH 5.8189430238357006e-09
+TRSG 0.0001833930765082264
+CDTG 0.314223273233104
+MTEN 0.24060731301036306
+SERV 6.059726828934879e-06
+JUNE 0.4404041743954218
+TWG 7.723436575366149e-27
+MNDR 0.018178236558555144
+CTNM 0.2399168631068747
+MAMO 0.006362858984316789
+ZBAO 0.006962103991384958
+MFI
+Test Statistic:  ADF: -4.16844   KPSS: 0.1375
+P-Value:         ADF: 0.00499    KPSS: 0.06575
+DurbinWatson: 1.84989
+Granger Causality Tests
+NCI 0.017945775787566898
+YYGH 9.857700155549308e-07
+TRSG 0.0019215576302002027
+CDTG 0.09387999689528954
+MTEN 0.4572731261354811
+SERV 3.299471478426566e-07
+JUNE 0.2800837416233592
+TWG 5.454784898177021e-13
+MNDR 0.013107249768979971
+CTNM 0.36092161874140727
+MAMO 0.005461888112773865
+ZBAO 0.15751345731870797
+YYGH
+Test Statistic:  ADF: -2.55588   KPSS: 0.16155
+P-Value:         ADF: 0.30061    KPSS: 0.03704
+DurbinWatson: 2.11464
+Granger Causality Tests
+NCI 3.020419873339458e-07
+MFI 0.0004908793425841399
+TRSG 0.0030946417366168643
+CDTG 0.41745233459182013
+MTEN 0.012012804691166687
+SERV 1.3186609653353024e-15
+JUNE 0.28231630403570135
+TWG 0.003726733906116157
+MNDR 0.00907255912554649
+CTNM 0.14404774558120753
+MAMO 0.010746966885030497
+ZBAO 0.0030847559647256923
+TRSG
+Test Statistic:  ADF: -2.12499   KPSS: 0.1134
+P-Value:         ADF: 0.53208    KPSS: 0.1
+DurbinWatson: 1.92478
+Granger Causality Tests
+NCI 5.6486809177809894e-08
+MFI 3.1348962756083764e-05
+CDTG 0.2668631758151852
+MTEN 0.08903368859283252
+SERV 3.186015132937128e-10
+JUNE 0.040232951750366355
+TWG 0.0005719726869587153
+MNDR 0.13439855964775074
+CTNM 0.10795982391230054
+MAMO 0.01015973801309408
+ZBAO 0.15826968612911346
+CDTG
+Test Statistic:  ADF: -2.16877   KPSS: 0.10244
+P-Value:         ADF: 0.50744    KPSS: 0.1
+DurbinWatson: 2.32120
+Granger Causality Tests
+NCI 0.17965366250964893
+MFI 0.01540426559817887
+TRSG 0.42847614682073265
+MTEN 0.02083984631336032
+SERV 0.016402671338460843
+JUNE 0.07653365766008155
+TWG 0.2224096762408425
+MNDR 0.034353707033041414
+CTNM 0.007993333802956557
+MAMO 0.03431094754076312
+ZBAO 0.28551989865682237
+MTEN
+Test Statistic:  ADF: -2.09854   KPSS: 0.16339
+P-Value:         ADF: 0.54692    KPSS: 0.03551
+DurbinWatson: 1.42146
+Granger Causality Tests
+NCI 0.039429170342011856
+MFI 0.00010444455925048574
+TRSG 0.22899341158454956
+CDTG 0.03661449763784348
+SERV 0.0037299604438113722
+JUNE 0.0019596575159911227
+TWG 0.005498877801246294
+MNDR 0.1312765197460677
+CTNM 0.0006659809189968719
+MAMO 0.026755407547713227
+ZBAO 0.8197925193869515
+SERV
+Test Statistic:  ADF: -8.96804   KPSS: 0.11209
+P-Value:         ADF: 0.0    KPSS: 0.1
+DurbinWatson: 1.11358
+Granger Causality Tests
+NCI 0.021497388497126107
+MFI 2.0821808323966406e-07
+TRSG 0.04696043520695991
+CDTG 0.4805297081332658
+JUNE 0.3471778122384291
+TWG 4.176069005541793e-15
+MNDR 0.15047856379787392
+CTNM 0.20765494226960765
+MAMO 0.0014532005694494446
+ZBAO 0.002385327503254167
+JUNE
+Test Statistic:  ADF: -1.52329   KPSS: 0.1008
+P-Value:         ADF: 0.82103    KPSS: 0.1
+DurbinWatson: 2.10745
+Granger Causality Tests
+NCI 0.33150294100413386
+MFI 0.659101090344502
+TRSG 0.3280981552282596
+CDTG 0.6757580022597776
+SERV 0.061715937499103965
+TWG 0.4068570447252676
+MNDR 0.002890180206600217
+CTNM 0.31590490639312546
+MAMO 0.6643868682982251
+ZBAO 0.5106520718938168
+TWG
+Test Statistic:  ADF: -2.82923   KPSS: 0.13148
+P-Value:         ADF: 0.18642    KPSS: 0.07689
+DurbinWatson: 2.11375
+Granger Causality Tests
+NCI 3.476995109568003e-05
+MFI 7.284478505635239e-12
+TRSG 0.04160751207359369
+CDTG 0.0825982019266483
+SERV 0.00020852178484395445
+JUNE 0.12040242824094465
+MNDR 0.003388926804986913
+CTNM 0.2274488247260604
+MAMO 0.037162730882720235
+ZBAO 0.06895822558708799
+MNDR
+Test Statistic:  ADF: -1.78656   KPSS: 0.12236
+P-Value:         ADF: 0.7112     KPSS: 0.09377
+DurbinWatson: 1.65656
+Granger Causality Tests
+NCI 8.198314521282883e-08
+MFI 0.00043472743563986125
+TRSG 0.01698317646306906
+CDTG 0.22127977618212352
+SERV 2.8296106912451605e-06
+JUNE 0.34740492389038574
+TWG 0.2736180706833865
+CTNM 0.2255899647641915
+MAMO 0.011238592483544252
+ZBAO 0.08271650756715583
+CTNM
+Test Statistic:  ADF: 0.80003    KPSS: 0.15447
+P-Value:         ADF: 1.0    KPSS: 0.04294
+DurbinWatson: 2.20008
+Granger Causality Tests
+NCI 0.04761688278040022
+MFI 0.0863548081731013
+TRSG 0.6723484038251455
+CDTG 0.12580718995965487
+SERV 0.05881123113837669
+JUNE 0.005277439442628583
+TWG 0.0264722081244814
+MNDR 0.5435598237394004
+MAMO 0.6615537005817882
+ZBAO 0.3726289876809017
+MAMO
+Test Statistic:  ADF: -4.41059   KPSS: 0.1278
+P-Value:         ADF: 0.00211    KPSS: 0.08371
+DurbinWatson: 2.10099
+Granger Causality Tests
+NCI 0.00012363694727781567
+MFI 1.5426799719318992e-08
+TRSG 0.1033862908930223
+CDTG 0.10262358177732177
+SERV 3.634266272271176e-06
+JUNE 0.028281229577953922
+TWG 0.05896015724948192
+MNDR 0.02191001286717986
+ZBAO 0.004570696452870772
+ZBAO
+Test Statistic:  ADF: -3.81297   KPSS: 0.09004
+P-Value:         ADF: 0.01592    KPSS: 0.1
+DurbinWatson: 2.41288
+Granger Causality Tests
+NCI 3.4330598237308766e-06
+MFI 2.2136697607835255e-06
+TRSG 0.11628791184154039
+CDTG 0.8098074855636705
+SERV 0.00036088063652237
+JUNE 0.46471010375363275
+TWG 0.02246270833214967
+MNDR 0.5745684301942794
+MAMO 0.011026702147088606</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-10-output-8.png" width="717" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct      pred   prev   errorPct     error
+NCI     0.628  0.609444  0.624   2.954843  0.018556
+MFI     0.930  0.924088  0.920   0.635707  0.005912
+TRSG    3.260  3.272764  3.290   0.391534  0.012764
+CDTG    3.340  4.079603  3.420  22.143820  0.739604
+SERV    2.800  3.047452  2.880   8.837575  0.247452
+JUNE    5.400  4.337072  5.420  19.683853  1.062928
+TWG     0.780  0.845271  0.834   8.368069  0.065271
+MNDR    1.520  0.462909  1.520  69.545478  1.057091
+MAMO    3.840  3.846327  4.000   0.164770  0.006327
+ZBAO    4.020  4.010909  4.000   0.226133  0.009091
+Mean Absolute Error: 0.32249961848412007
+Mean Squared Error: 0.28604291968717077
+Percent Directionally Correct: 0.5 (5/10)
+MAE of Percent Error: 13.295178267804275
+
+
+
+IPO MONTH: June
+BOW
+Test Statistic:  ADF: -3.50887   KPSS: 0.09492
+P-Value:         ADF: 0.03845    KPSS: 0.1
+DurbinWatson: 1.99343
+Granger Causality Tests
+JDZG 0.23103489547208444
+RAY 0.13786516217846184
+BTOC 0.6797584333931534
+SVCO 0.10987423303731886
+NNE 0.05734823559635164
+SOWG 0.3263649475949242
+JDZG
+Test Statistic:  ADF: -1.64356   KPSS: 0.13159
+P-Value:         ADF: 0.77491    KPSS: 0.07669
+DurbinWatson: 1.55328
+Granger Causality Tests
+BOW 0.15248002890571877
+RAY 0.4313360818815811
+BTOC 0.02479745975690673
+SVCO 0.4117282069059335
+NNE 0.4085068624149759
+SOWG 0.365779121935487
+RAY
+Test Statistic:  ADF: -2.28919   KPSS: 0.11491
+P-Value:         ADF: 0.43994    KPSS: 0.1
+DurbinWatson: 1.91186
+Granger Causality Tests
+BOW 0.37593217442634075
+JDZG 0.21046398648469794
+BTOC 0.5147519908142344
+SVCO 0.24071442401440762
+NNE 0.3150408158788855
+SOWG 0.004003475237870572
+BTOC
+Test Statistic:  ADF: -2.81767   KPSS: 0.07355
+P-Value:         ADF: 0.19053    KPSS: 0.1
+DurbinWatson: 2.42564
+Granger Causality Tests
+BOW 0.19059359019746863
+JDZG 0.013049071885527255
+RAY 0.044653143495952445
+SVCO 0.2723593837361412
+NNE 0.04628267286833248
+SOWG 0.21380641563581285
+SVCO
+Test Statistic:  ADF: -2.11824   KPSS: 0.09272
+P-Value:         ADF: 0.53587    KPSS: 0.1
+DurbinWatson: 2.23338
+Granger Causality Tests
+BOW 0.10823394282139179
+JDZG 0.6554650243340183
+RAY 0.19695522593044199
+BTOC 0.0007974946917104911
+NNE 0.25948071996523503
+SOWG 0.14246619884308898
+NNE
+Test Statistic:  ADF: 0.11135    KPSS: 0.1338
+P-Value:         ADF: 0.9952     KPSS: 0.07258
+DurbinWatson: 1.74072
+Granger Causality Tests
+BOW 0.04080001256554845
+JDZG 0.8133757060466059
+RAY 0.00319112215685425
+BTOC 0.16229910156241775
+SVCO 0.26158675308000634
+SOWG 0.4659740894201263
+SOWG
+Test Statistic:  ADF: -3.55781   KPSS: 0.15682
+P-Value:         ADF: 0.0336     KPSS: 0.04098
+DurbinWatson: 2.43214
+Granger Causality Tests
+BOW 0.1133057682740822
+JDZG 0.029894932628314056
+RAY 0.4316359253342723
+BTOC 0.7461236141204977
+SVCO 0.36504473475274335
+NNE 0.04207120000597983</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-10-output-10.png" width="717" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct       pred       prev   errorPct     error
+BOW    27.840  25.964105  26.950001   6.738129  1.875895
+JDZG    0.557   0.719545   0.509000  29.182223  0.162545
+RAY     2.500   3.540540   2.810000  41.621587  1.040540
+BTOC    4.660   4.803454   4.660000   3.078415  0.143454
+SVCO   16.180  18.015146  15.880000  11.342062  1.835146
+NNE     9.620  15.252716   9.860000  58.552147  5.632716
+SOWG   10.050   8.221612   9.500000  18.192921  1.828389
+Mean Absolute Error: 1.7883835014137406
+Mean Squared Error: 6.155280593789613
+Percent Directionally Correct: 0.2857142857142857 (2/7)
+MAE of Percent Error: 24.101069153860173
+
+
+
+IPO MONTH: July
+LSH
+Test Statistic:  ADF: -2.7394    KPSS: 0.08153
+P-Value:         ADF: 0.22009    KPSS: 0.1
+DurbinWatson: 2.00787
+Granger Causality Tests
+RECT 0.6846723995659832
+PCSC 0.3825230085985395
+RAPP 0.218312601173588
+FLYE 0.587853804629828
+RECT
+Test Statistic:  ADF: -3.46067   KPSS: 0.13405
+P-Value:         ADF: 0.04379    KPSS: 0.07213
+DurbinWatson: 2.58445
+Granger Causality Tests
+LSH 0.10582167732834293
+PCSC 0.23262450465655474
+RAPP 0.015962081101850347
+FLYE 0.1629156374992208
+PCSC
+Test Statistic:  ADF: -4.62428   KPSS: 0.1262
+P-Value:         ADF: 0.00094    KPSS: 0.08668
+DurbinWatson: 2.38954
+Granger Causality Tests
+LSH 0.020425612102521366
+RECT 0.3915799190955377
+RAPP 0.43459609424848644
+FLYE 0.047438496627235816
+RAPP
+Test Statistic:  ADF: -4.32761   KPSS: 0.09268
+P-Value:         ADF: 0.00285    KPSS: 0.1
+DurbinWatson: 2.49984
+Granger Causality Tests
+LSH 0.44262990175072825
+RECT 0.2118124741596914
+PCSC 0.24683257178984666
+FLYE 0.021648742159309682
+FLYE
+Test Statistic:  ADF: -1.80652   KPSS: 0.09764
+P-Value:         ADF: 0.70161    KPSS: 0.1
+DurbinWatson: 1.97976
+Granger Causality Tests
+LSH 0.3722004695673724
+RECT 0.004066226939165406
+PCSC 0.3954425380059593
+RAPP 0.005668542360680949</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-10-output-12.png" width="717" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct       pred    prev   errorPct     error
+LSH     2.480   2.795224   2.560  12.710659  0.315224
+RECT    3.236   3.154520   3.248   2.517935  0.081480
+PCSC   10.050  10.071431  10.050   0.213245  0.021431
+RAPP   20.240  21.499663  21.750   6.223632  1.259663
+FLYE    0.703   0.978750   0.713  39.224768  0.275750
+Mean Absolute Error: 0.39070982339515237
+Mean Squared Error: 0.3538507988591105
+Percent Directionally Correct: 0.4 (2/5)
+MAE of Percent Error: 12.178047879474509
+
+
+
+IPO MONTH: August
+NIPG
+Test Statistic:  ADF: -6.15742   KPSS: 0.15337
+P-Value:         ADF: 0.0    KPSS: 0.04386
+DurbinWatson: 1.84246
+Granger Causality Tests
+ORKT 0.4504214462657916
+BLMZ 0.634228720300255
+PGHL 0.5855018515805
+QMMM 0.3855373175146004
+ICON 0.008035315354751257
+EHGO 6.32518472647434e-05
+ORKT
+Test Statistic:  ADF: -1.64549   KPSS: 0.15057
+P-Value:         ADF: 0.77412    KPSS: 0.04619
+DurbinWatson: 1.82332
+Granger Causality Tests
+NIPG 0.4257461487677241
+BLMZ 0.16170229335586947
+PGHL 0.25052819728497305
+QMMM 0.7772784496877142
+ICON 0.0815221081499419
+EHGO 0.04641525117927823
+BLMZ
+Test Statistic:  ADF: -3.33969   KPSS: 0.07665
+P-Value:         ADF: 0.05998    KPSS: 0.1
+DurbinWatson: 1.61641
+Granger Causality Tests
+NIPG 0.09368373979152486
+PGHL 0.20146188358184255
+QMMM 0.03226719228751165
+ICON 0.02168517444350177
+EHGO 0.00292053190525945
+PGHL
+Test Statistic:  ADF: -1.26919   KPSS: 0.11052
+P-Value:         ADF: 0.89534    KPSS: 0.1
+DurbinWatson: 1.94677
+Granger Causality Tests
+NIPG 0.03507645722042986
+BLMZ 0.16411223180506498
+QMMM 0.31214954850097243
+ICON 0.33667910387042876
+EHGO 7.333514549740785e-07
+QMMM
+Test Statistic:  ADF: -2.91843   KPSS: 0.06643
+P-Value:         ADF: 0.15633    KPSS: 0.1
+DurbinWatson: 2.21855
+Granger Causality Tests
+NIPG 0.06401927026276631
+BLMZ 0.045656010854502285
+PGHL 0.03401570051646307
+ICON 0.0021604437477966616
+EHGO 0.0003161472000791021
+ICON
+Test Statistic:  ADF: -1.81912   KPSS: 0.11985
+P-Value:         ADF: 0.69547    KPSS: 0.09843
+DurbinWatson: 1.79562
+Granger Causality Tests
+NIPG 0.03242916756157151
+BLMZ 0.30453379457494834
+PGHL 0.2825158628409095
+QMMM 0.031111320376356753
+EHGO 0.04617014037220832
+EHGO
+Test Statistic:  ADF: -1.70241   KPSS: 0.1382
+P-Value:         ADF: 0.74981    KPSS: 0.06445
+DurbinWatson: 1.11808
+Granger Causality Tests
+NIPG 0.007490224620727097
+BLMZ 0.25641442419658017
+PGHL 0.46169225935455005
+QMMM 0.11388281056949391
+ICON 0.3309976064621839</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-10-output-14.png" width="730" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct       pred  prev   errorPct     error
+NIPG     7.10   6.964797  7.12   1.904268  0.135203
+BLMZ     1.06   1.299781  1.28  22.620890  0.239781
+PGHL    11.71  16.064520  9.60  37.186332  4.354520
+QMMM     7.70   6.889481  7.71  10.526222  0.810519
+ICON     2.08   2.277696  2.10   9.504619  0.197696
+EHGO     1.93   2.071844  2.18   7.349429  0.141844
+Mean Absolute Error: 0.9799271826923026
+Mean Squared Error: 3.2922933404630847
+Percent Directionally Correct: 0.6666666666666666 (4/6)
+MAE of Percent Error: 14.848626665913399
+
+
+
+IPO MONTH: September
+AZI
+Test Statistic:  ADF: -2.29635   KPSS: 0.16328
+P-Value:         ADF: 0.43597    KPSS: 0.0356
+DurbinWatson: 1.12856
+Granger Causality Tests
+SPAI 0.04574343051392714
+JBDI 0.25361701769333234
+RITR 0.2108864871277925
+WOK 0.749247511721808
+YXT 0.11192347389944556
+ACTU 0.016071685564824367
+CEP 0.32739720343649015
+OSTX 0.06429949638500017
+SPAI
+Test Statistic:  ADF: -1.97701   KPSS: 0.1775
+P-Value:         ADF: 0.6139     KPSS: 0.02444
+DurbinWatson: 1.84638
+Granger Causality Tests
+JBDI 0.049273076899153924
+RITR 0.878421021514134
+WOK 0.2375949411127368
+YXT 0.03337663386994069
+ACTU 0.32908258378297955
+CEP 0.07907435885170262
+OSTX 0.003895529264457489
+JBDI
+Test Statistic:  ADF: -1.7942    KPSS: 0.13202
+P-Value:         ADF: 0.70755    KPSS: 0.07589
+DurbinWatson: 2.06227
+Granger Causality Tests
+RITR 0.7109088406482142
+WOK 0.24815213940378036
+YXT 0.08561850155245104
+ACTU 0.8858160496377029
+CEP 0.1372679089109096
+OSTX 0.02599230999028473
+RITR
+Test Statistic:  ADF: -1.43074   KPSS: 0.08671
+P-Value:         ADF: 0.85166    KPSS: 0.1
+DurbinWatson: 2.15439
+Granger Causality Tests
+JBDI 0.7669808060615452
+WOK 0.08858558759561067
+YXT 0.23096679149716032
+ACTU 0.3054186089838323
+CEP 0.00019425020960553134
+OSTX 0.00572110854355926
+WOK
+Test Statistic:  ADF: -3.1711    KPSS: 0.08327
+P-Value:         ADF: 0.09031    KPSS: 0.1
+DurbinWatson: 1.68385
+Granger Causality Tests
+JBDI 0.14982872164164063
+RITR 0.23451013239980623
+YXT 0.06420674827485465
+ACTU 0.6041157543636733
+CEP 0.03222813985505957
+OSTX 0.0013611297785319214
+YXT
+Test Statistic:  ADF: -1.73133   KPSS: 0.16095
+P-Value:         ADF: 0.73689    KPSS: 0.03754
+DurbinWatson: 2.26405
+Granger Causality Tests
+JBDI 0.18755806926707927
+RITR 0.5100756387823793
+WOK 0.06162209588790907
+ACTU 0.9085137641494835
+CEP 0.005678189717637527
+OSTX 0.0032728903684544155
+ACTU
+Test Statistic:  ADF: -1.65286   KPSS: 0.1472
+P-Value:         ADF: 0.77105    KPSS: 0.049
+DurbinWatson: 1.97261
+Granger Causality Tests
+JBDI 0.5659841754276811
+RITR 0.035241983392562286
+WOK 0.4475126653341218
+CEP 0.5910826406436885
+OSTX 0.40953042181078797
+CEP
+Test Statistic:  ADF: -4.87106   KPSS: 0.1238
+P-Value:         ADF: 0.00035    KPSS: 0.0911
+DurbinWatson: 2.60440
+Granger Causality Tests
+JBDI 0.747626970501583
+RITR 0.4290325766318742
+WOK 0.14071658807739013
+OSTX 0.0002925536449958001
+OSTX
+Test Statistic:  ADF: -5.30766   KPSS: 0.12754
+P-Value:         ADF: 5e-05  KPSS: 0.08419
+DurbinWatson: 2.52329
+Granger Causality Tests
+JBDI 0.16376614779033305
+RITR 0.09497921846598327
+WOK 3.5558081754724864e-05
+CEP 0.1378246727184906</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-10-output-16.png" width="717" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct       pred    prev   errorPct     error
+JBDI    0.666   0.986375   0.666  48.104395  0.320375
+RITR    4.000   5.547642   4.488  38.691052  1.547642
+WOK     6.060   5.655000   6.420   6.683172  0.405000
+CEP    10.070  10.038730  10.070   0.310524  0.031270
+OSTX    2.910   3.326150   2.990  14.300689  0.416150
+Mean Absolute Error: 0.5440874822268652
+Mean Squared Error: 0.5672040288715017
+Percent Directionally Correct: 0.2 (1/5)
+MAE of Percent Error: 21.617966428544765
+
+
+
+IPO MONTH: October
+TDTH
+Test Statistic:  ADF: -2.89826   KPSS: 0.08683
+P-Value:         ADF: 0.16278    KPSS: 0.1
+DurbinWatson: 2.40378
+Granger Causality Tests
+XCH 0.7662843443114602
+PTHL 0.4711326997438693
+PMAX 0.3549695289503141
+XCH
+Test Statistic:  ADF: -2.39038   KPSS: 0.14949
+P-Value:         ADF: 0.38475    KPSS: 0.0471
+DurbinWatson: 2.05206
+Granger Causality Tests
+TDTH 0.22790008793274888
+PTHL 0.25608863449422387
+PMAX 0.19085942396585265
+PTHL
+Test Statistic:  ADF: -2.38988   KPSS: 0.1181
+P-Value:         ADF: 0.38501    KPSS: 0.1
+DurbinWatson: 2.40971
+Granger Causality Tests
+TDTH 0.8325116387413829
+PMAX 0.18693456813159082
+PMAX
+Test Statistic:  ADF: -2.79161   KPSS: 0.09028
+P-Value:         ADF: 0.20004    KPSS: 0.1
+DurbinWatson: 2.34362
+Granger Causality Tests
+TDTH 0.06132822012511721
+PTHL 0.35786477571750364</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="writeup_files/figure-html/cell-10-output-18.png" width="708" height="433" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      correct      pred  prev  errorPct     error
+TDTH     2.31  2.447354  2.67  5.946045  0.137354
+PTHL     4.54  4.597355  4.43  1.263325  0.057355
+PMAX     3.11  3.045296  3.11  2.080501  0.064704
+Mean Absolute Error: 0.08647072096142298
+Mean Squared Error: 0.008780721725094942
+Percent Directionally Correct: 0.6666666666666666 (2/3)
+MAE of Percent Error: 3.0966236783192778
+
+
+
+IPO MONTH: November
+TZUP
+Test Statistic:  ADF: -3.2689    KPSS: 0.08704
+P-Value:         ADF: 0.07153    KPSS: 0.1
+DurbinWatson: 2.16014
+Granger Causality Tests
+Insufficient number of symbols after preprocessing
+
+
+
+IPO MONTH: December
+ADUR
+Test Statistic:  ADF: -3.91058   KPSS: 0.13632
+P-Value:         ADF: 0.01173    KPSS: 0.06792
+DurbinWatson: 1.82832
+Granger Causality Tests
+Insufficient number of symbols after preprocessing</code></pre>
+</div>
+</div>
+</details>
+</section>
+<section id="discussion" class="level3">
+<h3 class="anchored" data-anchor-id="discussion">Discussion</h3>
+<p>This study was based on the assumption that IPOs with similar financial data would have similar stock performance. The results show us that this was not the case. However, there are more fundamental problem than that with the results of the study.</p>
+<p>First it can be seen in the graphs that K-Means clustering based on financial data did not provide groups of stocks with similar stock market performance. The K-Means clustering algorithm is very powerful and a common choice for clustering applications (Fang and Chiao, 2021). Its goal is to make the differences between items in a cluster as low as is possible (Fang and Chiao, 2021). Since the financial data was not enough to predict market reaction to the IPO, more data is needed to be able to group IPOs by performance.</p>
+<p>Besides the shortcomings of clustering by financial data, there are problems with the time series themselves. As can be seen in the results of the Augmented Dickey-Fuller test and the KPSS test, much of the data is not stationary. The Augmented Dickey-Fuller test was conducted using Statsmodel’s implementation. This test is used to check for the presence of a unit root in a data series (Statsmodels, 2010, ADFuller). The test run in this study uses the null hypothesis that there is a unit root and is one of the most prominent tests of stationarity (Acharya, 2024). P-Values that are not significant (the level of significance used in this study is 0.05) indicate that the test “cannot reject that there is a unit root” (Statsmodels, 2010, ADFuller). Should there be no unit root, the data can be said to be stationary under the Augmented Dickey Fuller test (Jacob and Littleflower, 2022).</p>
+<p>The KPSS test, or Kwiatkowski-Phillips-Schmidt-Shin test, was also used to test for stationarity. This test is similar to Augmented Dickey-Fuller, but it reverses the null, testing instead with a null hypothesis that the data is stationary (Statsmodels, 2009, KPSS). If the values are significant, the data can be said stationary under the KPSS test. This is considered by some to be the best test of stationarity for univariate time-series (Miller and Wang, 2016).</p>
+<p>Both these tests showed that not all of the data is stationary, even after using a log transformation. Stationarity is required for VAR to work properly. This can be seen in the plots of the stock charts. The plot of the data after stationarizing the data shows many of the plots are not oscillating about the mean. Instead, they still have trend, and they do not trend all in the same direction.</p>
+<p>In addition to this, the data does not exhibit strong autocorrelation. This means that past stock market values do not have a significant correlation to future values. This can be seen in the Durbin-Watson test results. The Durbin-Watson test implementation used was from statsmodels and tests the null hypothesis that there is “no serial correlation in the residuals” (Statsmodels, 2024, Durbin-Watson) or that there is not correlation between the previous observation and the present (Refenes and Holt, 2001). It is important to note that the Durbin-Watson test only checks a lag of 1 observation in the past (Refenes and Holt, 2001). However, this is usually not a problem for analysis as series with autocorrelation typically have the strongest correlation with the immediately preceding observation (Refenes and Holt, 2001). When there is no in a series autocorrelation, the Durbin-Watson test statistic equals 2 (Statsmodels, 2024, Durbin-Watson). To determine what value implies that autocorrelation exists, a Durbin-Watson table must be used. For this study, with a significance level of 0.05, and 60 values in the test, the corresponding dL and dU values are 1.55 and 1.62 respectively (Bobbit, 2019). This means the range from 1.62 to 2.38 means there is no evidence of autocorrelation and the range from 1.55-1.62 and 2.38-2.45 means the evidence is inconclusive (Brooks, 2019). Given this range and knowing that values outside 1.55-2.45 have significant autocorrelation, it is clear that there is not strong autocorrelation in many of the time series.</p>
+<p>In addition to autocorrelation, causality was tested using the Granger Causality test. Granger Causality looks at lags in one time series as a predictor of another. More specifically, given series X and Y, X Granger causes Y if Y can be better predicted using X and Y than Y alone (Folfas, 2016). When conducting a Granger Causality test using the Statsmodels implementation, the null hypothesis is that x2 does not Granger Cause x1 (Statsmodels, 2024, GrangerCausalityTest). In this study, x1 was the data is shown so that x2 was the column specified and x1 was any of the other columns in the data. A p-value less than 0.05 as specified in this study would mean that the given stock Granger causes the other stock listed (Statsmodels, 2024, GrangerCausalityTest). The results of the Granger Causality test on the data show the best possible Granger Causality Test result. This shows that although there are some time series that Granger Cause each other, the majority of them do not. It is important to note that the Granger Causality test assumes that the two time series being analyzed are stationary (Folfas, 2016). If they are not, the Granger Causality test will not provide accurate results (Folfas, 2016). Since some of the time series are not stationary, some of the results are brought into question.</p>
+<p>Once those tests had been performed, Vector Autoregression modeling was conducted. Vector Autoregression, or VAR, is “an n-equation, n-variable linear model in which each variable is in turn explained by its own lagged values, plus current and past values of the remaining n - 1 variables” (Stock and Watson, 2001). Developed with observation of macroeconomic trends in mind, VAR is a great tool for observing interrelated time series (Stock and Watson, 2001). VAR is often used as a benchmark for comparing against other modeling tools (Stokc and Watson, 2001). For VAR results to be most accurate, it is necessary to only include stationary data (Han, Lu, and Liu, 2015). Additionally, VAR works by exploiting the causation between lagged values of the various series (Stock and Watson, 2001). Since the data used in this study was not all stationary, and there was not a strong causal relationship between a stock and other stocks or even between a stock and its own past values, VAR did not produce very accurate results.</p>
+<p>In the results for the K-Means cluster, it is clear that Mean Absolute Error and Mean Squared Error do not represent the whole of the test very well. There are 3 significant outliers that skew the results. Another reason they are not a good representation of the results is that the data is not normalized. This allows the numerically large error values to drown out the numerically small error values. It was decided to leave the data unnormalized so that the results would be more easily interpretable. The implementation used was provided by Scikit Learn and used the raw values. The MAE was recalculated using the formula given below to find the Mean Absolute Error of the percentage difference between the prediction and the correct value. This is also very skewed but also provides a more helpful metric than a dollar value.</p>
+<p>Mean Absolute Error as Percentage Formula: <span class="math display">\[
+\text{MAE} = \frac{1}{n} \sum_{i=1}^{n} (\frac{| \text{correct}_i - \text{pred}_i |}{\text{correct}_i} \times 100)
+\]</span></p>
+<p>Additionally, as an example business use case, the percent of predictions that were directionally correct was calculated. If the data predictions were very accurate, the percentage of predictions that the model correctly found were above or below the 55th day would allow a trading institution to make investment decisions based on the predicted direction 5 days in the future.</p>
+</section>
+<section id="opportunities-for-future-research" class="level3">
+<h3 class="anchored" data-anchor-id="opportunities-for-future-research">Opportunities for Future Research</h3>
+<p>The problem with this study revolved around the fact that much of the data was not stationary or not predictive. The most beneficial step in terms of model accuracy would be to expand the window of stock market data that is viewed and given to the model before prediction. This would presumably allow data to become more stationary and more autocorrelated as investors become familiar with the stock and take advantage of shocks to bring the data back to a central mean. This would also allow the VAR model to use more data to find relationships between time series, which would benefit its accuracy as well.</p>
+<p>Additional effort should also be put into stationarizing the data. In this study, log transformations were used on the data before assessment and model fitting. During research differencing was tested but it was ineffective compared to log transformations. Log transformations combined with differencing was also researched but this also was less effective than log transformations. If a method of stationarization could be found that would be effective given the constraints of short time series and the fact that IPOs are very volatile, it would improve the results of the modeling.</p>
+<p>While there is not much that can be done to improve the autocorrelation of the data, different methods of grouping could improve the Granger Causality between the time series. Ideally, even in series that were not autocorrelated, there may exist stocks such that shocks in one stock imply movements in the price of other stocks. A place this may be found in stocks that are not IPOs could be stocks that are in common high value ETFs or part of major market indexes. Thus, a drop in one of the stocks may cause many fund managers to rebalance their portfolios and the other stocks in those portfolios would fluctuate accordingly. A method for finding that relationship in IPOs during their first months of trading would be invaluable for modeling purposes.</p>
+<p>Given the restrictions of the data found in this study, other modeling methods may be more appropriate. Recurrent Neural Networks (RNNs) are commonly accepted as the most accurate method for time series analysis (Li et al., 2019). Long and Short Term Memory Unit (LSTM) models are one of the most reliable types of RNNs. They use an RNNs network of connected nodes modeling behavior with the ability to remember and forget (Li et al., 2019).</p>
+<p>Another option for machine learning applied to IPO forecasting could be Gradient Boosting. Gradient Boosting uses regression trees that are combined and weighted to find a final prediction (Brownlee, 2018). Its use of memory as a supervised regression algorithm makes it a good choice for time series (Qinghe et al., 2022).</p>
+<p>Finally, it was determined experimentally that clustering IPOs based on financial data did not yield time series that were very similar shortly after launch. More research should be done on what makes stocks act similarly after launch that would allow them to be clustered.</p>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>In conclusion, this study explored IPO stock data shortly after going public. IPOs were clusted together based on their financial data, as well as grouped according to industry and month of IPO. It was found that those methods of grouping were not sufficient to gather stocks with a strong correlation relationship necessary for statistical modeling and prediction. The reasons for this were explored. Opportunities for future research of applying machine learning to IPO prediction were discussed. The prediction of IPOs is a valuable area of study due to its applicability to science-based stock trading.</p>
 </section>
 <section id="references" class="level3">
 <h3 class="anchored" data-anchor-id="references">References</h3>
-<p>Daily Market Summary. (n.d.). Retrieved from www.nasdaqtrader.com website: https://www.nasdaqtrader.com/Trader.aspx?id=DailyMarketSummary</p>
+<p>Acharya, D. (2024). Comparative Analysis of Stock Bubble in S&amp;P 500 Individual Stocks: A Study Using SADF and GSADF Models. Journal of Risk and Financial Management, 17(2), 59. https://doi.org/10.3390/jrfm17020059</p>
+<p>Bobbit, Z. (2019, January 4). Durbin-Watson Table. Statology. https://www.statology.org/durbin-watson-table/</p>
+<p>Brooks, C. (2019). Introductory Econometrics for Finance (4th ed.). Cambridge University Press.</p>
+<p>Daily Market Summary. (n.d.). Www.nasdaqtrader.com. Retrieved December 9, 2024, from https://www.nasdaqtrader.com/Trader.aspx?id=DailyMarketSummary</p>
+<p>Fang, Z., &amp; Chiao, C. (2021). Research on prediction and recommendation of financial stocks based on K-means clustering algorithm optimization. Journal of Computational Methods in Sciences and Engineering, 21(5), 1081–1089. https://doi.org/10.3233/jcm-204716</p>
+<p>Fernando, J. (2024). Initial Public Offering (IPO): What It Is and How It Works. Investopedia. https://www.investopedia.com/terms/i/ipo.asp</p>
+<p>Folfas, P. (2016). Co-movements of NAFTA stock markets: Granger‑causality analysis. Economics and Business Review, 2 (16)(1), 53–65. https://doi.org/10.18559/ebr.2016.1.4</p>
+<p>For the first time in our history, NYSE will trade all 8,000 securities listed on all U.S stock exchanges, including exchange traded funds. (n.d.). Www.nyse.com. Retrieved December 9, 2024, from https://www.nyse.com/network/article/nyse-tapes-b-and-c</p>
+<p>Han, F., Lu, H., &amp; Liu, H. (2015). A Direct Estimation of High Dimensional Stationary Vector Autoregressions. Journal of Machine Learning Research, 16(16), 3115–3150. https://jmlr.csail.mit.edu/papers/volume16/han15a/han15a.pdf</p>
+<p>Jacob, T., &amp; Littleflower, J. P. (2022). Cointegration and stock market interdependence: Evidence from India and selected Asian and African stock markets. Theoretical and Applied Economics, XXIX(4), 133–146. https://doaj.org/article/cdd5d4da6cb64285a26af2e527de45af</p>
+<p>Jason Brownlee. (2018, November 20). A Gentle Introduction to the Gradient Boosting Algorithm for Machine Learning. Machine Learning Mastery. https://machinelearningmastery.com/gentle-introduction-gradient-boosting-algorithm-machine-learning/</p>
+<p>Li, Y., Zhu, Z., Kong, D., Han, H., &amp; Zhao, Y. (2019). EA-LSTM: Evolutionary attention-based LSTM for time series prediction. Knowledge-Based Systems, 181, 104785. https://doi.org/10.1016/j.knosys.2019.05.028</p>
+<p>Miller, J. I., &amp; Wang, X. (2016). Implementing Residual-Based KPSS Tests for Cointegration with Data Subject to Temporal Aggregation and Mixed Sampling Frequencies. Journal of Time Series Analysis, 37(6), 810–824. https://doi.org/10.1111/jtsa.12188</p>
+<p>Qinghe, Z., Wen, X., Boyan, H., Jong, W., &amp; Junlong, F. (2022). Optimised extreme gradient boosting model for short term electric load demand forecasting of regional grid system. Scientific Reports, 12(1). https://doi.org/10.1038/s41598-022-22024-3</p>
+<p>Refenes, A.-P. .N., &amp; Holt, W. T. (2001). Forecasting volatility with neural regression: A contribution to model adequacy. IEEE Transactions on Neural Networks, 12(4), 850–864. https://doi.org/10.1109/72.935095</p>
+<p>scikit-learn. (2019a). sklearn.cluster.KMeans — scikit-learn 0.21.3 documentation. Scikit-Learn.org. https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html</p>
+<p>scikit-learn. (2019b). sklearn.preprocessing.StandardScaler — scikit-learn 0.21.2 documentation. Scikit-Learn.org. https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html</p>
+<p>statsmodels.stats.stattools.durbin_watson - statsmodels 0.14.3. (2024). Statsmodels.org. https://www.statsmodels.org/stable/generated/statsmodels.stats.stattools.durbin_watson.html</p>
+<p>statsmodels.tsa.stattools.adfuller — statsmodels v0.11.0dev0+265.gb3c5e2711 documentation. (2010). Statsmodels.org. https://www.statsmodels.org/dev/generated/statsmodels.tsa.stattools.adfuller.html</p>
+<p>statsmodels.tsa.stattools.grangercausalitytests — statsmodels. (2024, October 3). Www.statsmodels.org. https://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.grangercausalitytests.html</p>
+<p>statsmodels.tsa.stattools.kpss — statsmodels v0.11.0dev0+136.g9bd3eb5af documentation. (2009). Statsmodels.org. https://www.statsmodels.org/dev/generated/statsmodels.tsa.stattools.kpss.html</p>
+<p>Stock, J. H., &amp; Watson, M. W. (2001). Vector Autoregressions. Journal of Economic Perspectives, 15(4), 101–115. https://doi.org/10.1257/jep.15.4.101</p>
 </section>
 </section>
 
@@ -187,8 +3453,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -299,7 +3563,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
