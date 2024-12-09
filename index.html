@@ -175,12 +175,12 @@ window.Quarto = {
 <p>To begin, data was collected for the grouping and forecasting. The first dataset is from IPO Scoop. It includes a company name, the company’s symbol, the industry that company is in, the date that stock was first offered publicly, the number of shares offered, how much it cost when it was offered, the market cap of the company, its revenue and its net income. Each of those data points were standardized using Scikit-Learn’s Standard Scaler, which transforms the data to have a mean of 0 and a standard deviation of 1 (scikit-learn.org, 2024, StandardScaler).</p>
 <p>A second dataset was collected through Yahoo Finance. This data consisted of the first 60 day candles of the IPO’s public response. This data included the open, high, low and close price, as well as the volume of shares traded on that day.</p>
 <p>Once those datasets were collected, the grouping of similar stocks was performed. The primary method of grouping IPOs together for this study was K-Means clustering. This was done using the financial information dataset. The data was clustered into two groups. The data was again grouped by industry where all those stocks from the same industry were put in a group. It was also grouped by month of IPO, where all stocks that launched in the same month were put in a group.</p>
-<p>Finally, time series analysis was performed to make a forecast from the stock data of the stocks in a given group. This was done using Vector Autoregression (or VAR). The first 55 days of stock performance for a group of stocks were used to fit a VAR model. This was tested on the clusters created by K-Means Clustering, the groups created by industry and the groups created by month of IPO.</p>
+<p>Finally, time series analysis was performed to make a forecast from the stock data of the stocks in a given group. This was done using Vector Autoregression (or VAR). The first 55 days of stock performance for a group of stocks were used to fit a VAR model. Day 60 was the target for prediction. This was tested on the clusters created by K-Means Clustering, the groups created by industry and the groups created by month of IPO.</p>
 </section>
 <section id="results" class="level3">
 <h3 class="anchored" data-anchor-id="results">Results</h3>
 <p>When the data was clustered there were a lot of outliers when visualizing them based on two principal components. The first principal component was primarily based on the number of shares of the company. The second was based on the remaining data points with a roughly even split.</p>
-<div id="c9e6f730" class="cell" data-execution_count="1">
+<div id="4978c1df" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> analysis.clustering_util <span class="im">import</span> <span class="op">*</span></span>
@@ -214,7 +214,7 @@ Component 2 [-0.06407769  0.53952155  0.52025562  0.31929104  0.57636609]
 </div>
 </div>
 <p>These outliers were removed by dropping IPOs that were farther from the mean of the principal components. This allowed for a much tighter grouping.</p>
-<div id="32a64797" class="cell" data-execution_count="2">
+<div id="a3ee0a50" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> analysis.clustering_util <span class="im">import</span> <span class="op">*</span></span>
@@ -239,7 +239,7 @@ Component 2 [-0.06407769  0.53952155  0.52025562  0.31929104  0.57636609]
 </div>
 </div>
 <p>Once the outliers were removed it was necessary to determine how many clusters the K-Means algorithm should create. The K-Means algorithm requires a set number of groups before performing a clustering (scikit-learn, 2019, K-Means). An elbow plot was created, and it was shown that the ideal number of clusters was 2. Then the K-Means algorithm was run and the two clusters were created.</p>
-<div id="3c677464" class="cell" data-execution_count="3">
+<div id="f0e94887" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> analysis.clustering_util <span class="im">import</span> <span class="op">*</span></span>
@@ -270,7 +270,7 @@ Component 2 [-0.06407769  0.53952155  0.52025562  0.31929104  0.57636609]
 </div>
 </div>
 </div>
-<div id="57558353" class="cell" data-execution_count="4">
+<div id="c2098e98" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> analysis.clustering_util <span class="im">import</span> <span class="op">*</span></span>
@@ -319,7 +319,7 @@ Component 2 [-0.06407769  0.53952155  0.52025562  0.31929104  0.57636609]
 <summary>
 Show Results of Stationarity and Correlation Tests
 </summary>
-<div id="95d28404" class="cell" data-execution_count="5">
+<div id="c3023057" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> prediction.prediction_util <span class="im">import</span> <span class="op">*</span></span>
@@ -590,7 +590,7 @@ AVBP 0.16875412103652332
 </div>
 </div>
 </details>
-<div id="9b6baf96" class="cell" data-execution_count="6">
+<div id="3d708fed" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.8</span>))</span>
@@ -609,7 +609,7 @@ AVBP 0.16875412103652332
 </div>
 </div>
 <p>Once the clusters were created, the stocks from that cluster were given to the VAR model. The small cluster was analyzed.</p>
-<div id="ce82f6ab" class="cell" data-execution_count="7">
+<div id="b4c085f0" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tools.sm_exceptions <span class="im">import</span> ValueWarning</span>
@@ -733,7 +733,7 @@ MAE of Percent Error: 8.993206453218596</code></pre>
 <summary>
 Show results of Industry Group Tests
 </summary>
-<div id="5379d12e" class="cell" data-execution_count="8">
+<div id="dc44ff03" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tools.sm_exceptions <span class="im">import</span> ValueWarning</span>
@@ -2124,7 +2124,7 @@ MAE of Percent Error: 8.843576673080616</code></pre>
 <summary>
 Show results of Monly Group Tests
 </summary>
-<div id="1aee26b0" class="cell" data-execution_count="9">
+<div id="36607667" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tools.sm_exceptions <span class="im">import</span> ValueWarning</span>
@@ -3316,7 +3316,7 @@ Insufficient number of symbols after preprocessing</code></pre>
 <section id="discussion" class="level3">
 <h3 class="anchored" data-anchor-id="discussion">Discussion</h3>
 <p>This study was based on the assumption that IPOs with similar financial data would have similar stock performance. The results show us that this was not the case. However, there are more fundamental problem than that with the results of the study.</p>
-<p>First it can be seen in the graphs that K-Means clustering based on financial data did not provide groups of stocks with similar stock market performance. The K-Means clustering algorithm is very powerful and a common choice for clustering applications (Fang and Chiao, 2021). Its goal is to make the differences between items in a cluster as low as is possible (Fang and Chiao, 2021). Since the financial data was not enough to predict market reaction to the IPO, more data is needed to be able to group IPOs by performance.</p>
+<p>First it can be seen in the graphs that K-Means clustering based on financial data did not provide groups of stocks with similar stock market performance. The K-Means clustering algorithm is very powerful and a common choice for clustering applications (Fang and Chiao, 2021). Its goal is to make the differences between items in a cluster as low as is possible (Fang and Chiao, 2021). Since the financial data was not enough to predict market reaction to the IPO, more data is needed to be able to group IPOs by performance. However, since the K-Means clusters performed better than grouping by industry and by month of launch, there is a possibility that more advanced methods of clustering, combined with additional data could yield useful results.</p>
 <p>Besides the shortcomings of clustering by financial data, there are problems with the time series themselves. As can be seen in the results of the Augmented Dickey-Fuller test and the KPSS test, much of the data is not stationary. The Augmented Dickey-Fuller test was conducted using Statsmodel’s implementation. This test is used to check for the presence of a unit root in a data series (Statsmodels, 2010, ADFuller). The test run in this study uses the null hypothesis that there is a unit root and is one of the most prominent tests of stationarity (Acharya, 2024). P-Values that are not significant (the level of significance used in this study is 0.05) indicate that the test “cannot reject that there is a unit root” (Statsmodels, 2010, ADFuller). Should there be no unit root, the data can be said to be stationary under the Augmented Dickey Fuller test (Jacob and Littleflower, 2022).</p>
 <p>The KPSS test, or Kwiatkowski-Phillips-Schmidt-Shin test, was also used to test for stationarity. This test is similar to Augmented Dickey-Fuller, but it reverses the null, testing instead with a null hypothesis that the data is stationary (Statsmodels, 2009, KPSS). If the values are significant, the data can be said stationary under the KPSS test. This is considered by some to be the best test of stationarity for univariate time-series (Miller and Wang, 2016).</p>
 <p>Both these tests showed that not all of the data is stationary, even after using a log transformation. Stationarity is required for VAR to work properly. This can be seen in the plots of the stock charts. The plot of the data after stationarizing the data shows many of the plots are not oscillating about the mean. Instead, they still have trend, and they do not trend all in the same direction.</p>

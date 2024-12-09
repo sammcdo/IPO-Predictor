@@ -76,8 +76,8 @@ group.
 
 Finally, time series analysis was performed to make a forecast from the stock data of the stocks in a given group.
 This was done using Vector Autoregression (or VAR). The first 55 days of stock performance for a group of stocks were
-used to fit a VAR model. This was tested on the clusters created by K-Means Clustering, the groups created by industry
-and the groups created by month of IPO.
+used to fit a VAR model. Day 60 was the target for prediction. This was tested on the clusters created by K-Means
+Clustering, the groups created by industry and the groups created by month of IPO.
 
 ### Results
 
@@ -605,7 +605,9 @@ First it can be seen in the graphs that K-Means clustering based on financial da
 with similar stock market performance. The K-Means clustering algorithm is very powerful and a common choice for
 clustering applications (Fang and Chiao, 2021). Its goal is to make the differences between items in a cluster as low
 as is possible (Fang and Chiao, 2021). Since the financial data was not enough to predict market reaction to the IPO,
-more data is needed to be able to group IPOs by performance.
+more data is needed to be able to group IPOs by performance. However, since the K-Means clusters performed better than
+grouping by industry and by month of launch, there is a possibility that more advanced methods of clustering, combined
+with additional data could yield useful results.
 
 Besides the shortcomings of clustering by financial data, there are problems with the time series themselves. As can be
 seen in the results of the Augmented Dickey-Fuller test and the KPSS test, much of the data is not stationary. The
