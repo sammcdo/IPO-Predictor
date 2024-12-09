@@ -59,16 +59,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="writeup_files/libs/clipboard/clipboard.min.js"></script>
-<script src="writeup_files/libs/quarto-html/quarto.js"></script>
-<script src="writeup_files/libs/quarto-html/popper.min.js"></script>
-<script src="writeup_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="writeup_files/libs/quarto-html/anchor.min.js"></script>
-<link href="writeup_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="writeup_files/libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="writeup_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="writeup_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="writeup_files/libs/bootstrap/bootstrap-8a79a254b8e706d3c925cde0a310d4f0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap-8a79a254b8e706d3c925cde0a310d4f0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -180,7 +180,7 @@ window.Quarto = {
 <section id="results" class="level3">
 <h3 class="anchored" data-anchor-id="results">Results</h3>
 <p>When the data was clustered there were a lot of outliers when visualizing them based on two principal components. The first principal component was primarily based on the number of shares of the company. The second was based on the remaining data points with a roughly even split.</p>
-<div id="5cc11e25" class="cell" data-execution_count="1">
+<div id="c9e6f730" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> analysis.clustering_util <span class="im">import</span> <span class="op">*</span></span>
@@ -208,13 +208,13 @@ Component 2 [-0.06407769  0.53952155  0.52025562  0.31929104  0.57636609]
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-2-output-2.png" width="594" height="449" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-2-output-2.png" width="594" height="449" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>These outliers were removed by dropping IPOs that were farther from the mean of the principal components. This allowed for a much tighter grouping.</p>
-<div id="dd9bc69d" class="cell" data-execution_count="2">
+<div id="32a64797" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> analysis.clustering_util <span class="im">import</span> <span class="op">*</span></span>
@@ -233,13 +233,13 @@ Component 2 [-0.06407769  0.53952155  0.52025562  0.31929104  0.57636609]
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-3-output-1.png" width="602" height="449" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-3-output-1.png" width="602" height="449" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Once the outliers were removed it was necessary to determine how many clusters the K-Means algorithm should create. The K-Means algorithm requires a set number of groups before performing a clustering (scikit-learn, 2019, K-Means). An elbow plot was created, and it was shown that the ideal number of clusters was 2. Then the K-Means algorithm was run and the two clusters were created.</p>
-<div id="b1b811db" class="cell" data-execution_count="3">
+<div id="3c677464" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> analysis.clustering_util <span class="im">import</span> <span class="op">*</span></span>
@@ -265,12 +265,12 @@ Component 2 [-0.06407769  0.53952155  0.52025562  0.31929104  0.57636609]
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-4-output-1.png" width="603" height="449" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-4-output-1.png" width="603" height="449" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="c1a027ea" class="cell" data-execution_count="4">
+<div id="57558353" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> analysis.clustering_util <span class="im">import</span> <span class="op">*</span></span>
@@ -309,7 +309,7 @@ Component 2 [-0.06407769  0.53952155  0.52025562  0.31929104  0.57636609]
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-5-output-1.png" width="602" height="449" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-5-output-1.png" width="602" height="449" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -319,7 +319,7 @@ Component 2 [-0.06407769  0.53952155  0.52025562  0.31929104  0.57636609]
 <summary>
 Show Results of Stationarity and Correlation Tests
 </summary>
-<div id="76aa1676" class="cell" data-execution_count="5">
+<div id="95d28404" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> prediction.prediction_util <span class="im">import</span> <span class="op">*</span></span>
@@ -590,7 +590,7 @@ AVBP 0.16875412103652332
 </div>
 </div>
 </details>
-<div id="9d52bc5f" class="cell" data-execution_count="6">
+<div id="9b6baf96" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.8</span>))</span>
@@ -603,13 +603,13 @@ AVBP 0.16875412103652332
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-7-output-1.png" width="717" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-7-output-1.png" width="717" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Once the clusters were created, the stocks from that cluster were given to the VAR model. The small cluster was analyzed.</p>
-<div id="df67381b" class="cell" data-execution_count="7">
+<div id="ce82f6ab" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tools.sm_exceptions <span class="im">import</span> ValueWarning</span>
@@ -705,7 +705,7 @@ AVBP 0.16875412103652332
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-8-output-1.png" width="717" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-8-output-1.png" width="717" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -733,7 +733,7 @@ MAE of Percent Error: 8.993206453218596</code></pre>
 <summary>
 Show results of Industry Group Tests
 </summary>
-<div id="842d35d2" class="cell" data-execution_count="8">
+<div id="5379d12e" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tools.sm_exceptions <span class="im">import</span> ValueWarning</span>
@@ -888,7 +888,7 @@ CEP 0.7253002930981398
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-9-output-2.png" width="738" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-9-output-2.png" width="738" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -944,7 +944,7 @@ TWG 0.08016804138302787
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-9-output-4.png" width="717" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-9-output-4.png" width="717" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1084,7 +1084,7 @@ INTJ 0.11577411864327523
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-9-output-6.png" width="717" height="436" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-9-output-6.png" width="717" height="436" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1146,7 +1146,7 @@ ZBAO 0.05753742245020424
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-9-output-8.png" width="717" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-9-output-8.png" width="717" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1412,7 +1412,7 @@ GUTS 0.28126009001128
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-9-output-10.png" width="717" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-9-output-10.png" width="717" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1680,7 +1680,7 @@ JL 0.1147019681600659
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-9-output-12.png" width="717" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-9-output-12.png" width="717" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1811,7 +1811,7 @@ BTOC 0.6661818558308004
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-9-output-14.png" width="708" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-9-output-14.png" width="708" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -2063,7 +2063,7 @@ YIBO 0.05632817115882605
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-9-output-16.png" width="717" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-9-output-16.png" width="717" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -2104,7 +2104,7 @@ NNE 0.5096592440595482
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-9-output-18.png" width="717" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-9-output-18.png" width="717" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -2124,7 +2124,7 @@ MAE of Percent Error: 8.843576673080616</code></pre>
 <summary>
 Show results of Monly Group Tests
 </summary>
-<div id="20a62960" class="cell" data-execution_count="9">
+<div id="1aee26b0" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tools.sm_exceptions <span class="im">import</span> ValueWarning</span>
@@ -2355,7 +2355,7 @@ PSBD 0.11968058394133682</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-10-output-2.png" width="717" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-10-output-2.png" width="717" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -2492,7 +2492,7 @@ ANRO 0.09487739164133752</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-10-output-4.png" width="717" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-10-output-4.png" width="717" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -2589,7 +2589,7 @@ INTJ 0.3457482539983596</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-10-output-6.png" width="717" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-10-output-6.png" width="717" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -2832,7 +2832,7 @@ MAMO 0.011026702147088606</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-10-output-8.png" width="717" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-10-output-8.png" width="717" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -2937,7 +2937,7 @@ NNE 0.04207120000597983</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-10-output-10.png" width="717" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-10-output-10.png" width="717" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -3007,7 +3007,7 @@ RAPP 0.005668542360680949</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-10-output-12.png" width="717" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-10-output-12.png" width="717" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -3102,7 +3102,7 @@ ICON 0.3309976064621839</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-10-output-14.png" width="730" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-10-output-14.png" width="730" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -3223,7 +3223,7 @@ CEP 0.1378246727184906</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-10-output-16.png" width="717" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-10-output-16.png" width="717" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -3276,7 +3276,7 @@ PTHL 0.35786477571750364</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="writeup_files/figure-html/cell-10-output-18.png" width="708" height="433" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-10-output-18.png" width="708" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
