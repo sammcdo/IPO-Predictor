@@ -87,7 +87,7 @@ for c in g1StockData.columns:
         gc[x] = min(granger_test(g1StockData[c], g1StockData[x]).values())
         print(x, gc[x])
     print(gc)
-    if p > 0.05 and pK > 0.05:
+    if p > 0.05 and pK < 0.05:
         g1StockData.drop(columns=c, inplace=True)
     
 
@@ -125,16 +125,22 @@ for c in forecast_df.columns:
     # forecast_df[c] = lambdas[c].inverse_transform(forecast_df[[c]])
 
 plt.figure(figsize=(12, 6))
-plt.plot(g1StockData.iloc[:-5].index, g1StockData.iloc[:-5], label='Original')
-plt.plot(forecast_df.index, forecast_df, label='Forecast')
-# plt.legend()
+for i, c in enumerate(g1StockData.columns):
+    plt.plot(g1StockData.iloc[:-5].index, g1StockData[c].iloc[:-5], label=c)
+for i, c in enumerate(g1StockData.columns):
+    plt.plot(forecast_df.index, forecast_df.iloc[:, i], color=plt.gca().lines[i].get_color())
+# plt.plot(g1StockData.iloc[:-5].index, g1StockData.iloc[:-5], label='Original')
+# plt.plot(forecast_df.index, forecast_df, label='Forecast')
+plt.legend()
 plt.xticks(rotation=90)
 plt.show()
 
 correct = g1StockData.iloc[-1]
 pred = forecast_df.iloc[-1]
 prev = g1StockData.iloc[-2]
-results = pd.DataFrame({"correct":correct, "pred":pred, "prev":prev})
+error = abs(correct - pred)
+errorPct = error / correct * 100
+results = pd.DataFrame({"correct":correct, "pred":pred, "prev":prev, "errorPct":errorPct, "error":error})
 print(correct)
 print(pred)
 print(results)
@@ -148,9 +154,14 @@ mse = mean_squared_error(results['correct'], results['pred'])
 print('Mean Squared Error:', mse)
 
 count = 0
+errorPct = []
 for i in range(len(correct)):
     if correct.iloc[i] < prev.iloc[i] and pred.iloc[i] < prev.iloc[i]:
         count += 1
     if correct.iloc[i] > prev.iloc[i] and pred.iloc[i] > prev.iloc[i]:
         count += 1
+    errorPct.append(abs(correct.iloc[i] - pred.iloc[i]) / correct.iloc[i] * 100)
 print("Percent Directionally Correct:", count / len(correct), f"({count}/{len(correct)})")
+print("MAE of Percent Error:", sum(results["errorPct"]) / len(results))
+print()
+print(errorPct)

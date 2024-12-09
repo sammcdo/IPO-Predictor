@@ -11,7 +11,7 @@ np.random.seed(42)
 
 ### Visualize Data
 x, _ = getData()
-x, _ = addPCA(x)
+x, pca = addPCA(x)
 
 # plot the ipos
 plt.scatter(x['pc1'], x['pc2'], cmap='viridis')
@@ -19,6 +19,9 @@ plt.title('Visualize IPOs')
 plt.xlabel('PC 1')
 plt.ylabel('PC 2')
 plt.show()
+
+print(pca.components_)
+print(pca.explained_variance_ratio_)
 
 
 ### Remove Outliers
